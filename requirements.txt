@@ -1,0 +1,9 @@
+aiomysql
+databases
+fastapi[all]
+pytest
+pytest-asyncio
+pytest-cov
+python-dotenv
+structlog
+uvicorn[standard]

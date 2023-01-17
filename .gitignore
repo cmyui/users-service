@@ -1,0 +1,6 @@
+/.vscode
+__pycache__/
+mount/.coverage
+pgdata/
+mysql/
+.env

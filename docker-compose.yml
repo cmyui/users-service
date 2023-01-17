@@ -1,0 +1,46 @@
+version: "3.3"
+
+services:
+  ## shared/managed services
+
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=lol123
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    ## application services
+
+  beatmap-ids-service:
+    image: beatmap-ids-service:latest
+    ports:
+      - 12000:80
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_COMPONENT=${APP_COMPONENT}
+      - APP_HOST=${APP_HOST}
+      - APP_PORT=${APP_PORT}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - READ_DB_DRIVER=${READ_DB_DRIVER}
+      - READ_DB_USER=${READ_DB_USER}
+      - READ_DB_PASS=${READ_DB_PASS}
+      - READ_DB_HOST=${READ_DB_HOST}
+      - READ_DB_PORT=${READ_DB_PORT}
+      - READ_DB_NAME=${READ_DB_NAME}
+      - WRITE_DB_DRIVER=${WRITE_DB_DRIVER}
+      - WRITE_DB_USER=${WRITE_DB_USER}
+      - WRITE_DB_PASS=${WRITE_DB_PASS}
+      - WRITE_DB_HOST=${WRITE_DB_HOST}
+      - WRITE_DB_PORT=${WRITE_DB_PORT}
+      - WRITE_DB_NAME=${WRITE_DB_NAME}
+      - MIN_DB_POOL_SIZE=${MIN_DB_POOL_SIZE}
+      - MAX_DB_POOL_SIZE=${MAX_DB_POOL_SIZE}
+      - DB_USE_SSL=${DB_USE_SSL}
+    volumes:
+      - ./mount:/srv/root
+      - ./scripts:/scripts
+    depends_on:
+      - mysql
