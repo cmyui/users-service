@@ -1,6 +1,7 @@
 import traceback
 from typing import Any
 from uuid import uuid4
+
 from app.common import logger
 from app.common.context import Context
 from app.common.errors import ServiceError
