@@ -14,8 +14,8 @@ services:
       - 3306:3306
     ## application services
 
-  beatmap-ids-service:
-    image: beatmap-ids-service:latest
+  example-service:
+    image: example-service:latest
     ports:
       - 12000:80
     environment:
