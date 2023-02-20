@@ -38,7 +38,7 @@ def failure(
     error: ServiceError,
     message: str,
     status_code: int = 400,
-    headers: dict | None = None,
+    headers: dict[str, str] | None = None,
 ) -> Any:
     data = {"status": "error", "error": error, "message": message}
     return json.ORJSONResponse(data, status_code, headers)
