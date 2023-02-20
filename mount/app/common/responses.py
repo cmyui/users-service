@@ -19,7 +19,7 @@ class Success(GenericModel, Generic[T]):
 def success(
     content: Any,
     status_code: int = 200,
-    headers: dict[str, Any] | None = None,
+    headers: dict[str, str] | None = None,
     meta: dict[str, Any] | None = None,
 ) -> Any:
     if meta is None:
