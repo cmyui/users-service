@@ -1,3 +1,4 @@
+import hashlib
 from typing import Any
 from typing import Generic
 from typing import Literal
@@ -5,8 +6,14 @@ from typing import TypeVar
 
 from app.common import json
 from app.common.errors import ServiceError
+from fastapi import Response
 from fastapi import status
 from pydantic.generics import GenericModel
+
+
+def get_entity_tag(data: dict[str, Any]) -> str:
+    return hashlib.md5(json.dumps(data)).hexdigest()
+
 
 T = TypeVar("T")
 
@@ -27,6 +34,10 @@ def success(
         meta = {}
     data = {"status": "success", "data": content, "meta": meta}
     return json.ORJSONResponse(data, status_code, headers)
+
+
+def not_modified() -> Any:
+    return Response(status_code=304)
 
 
 class ErrorResponse(GenericModel, Generic[T]):
