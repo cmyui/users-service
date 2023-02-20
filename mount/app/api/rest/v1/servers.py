@@ -36,6 +36,7 @@ async def create_server(
         status_code=status.HTTP_201_CREATED,
         headers={
             "Location": f"/v1/servers/{resp.server_id}",
+            "ETag": get_entity_tag(resp),
         },
     )
 
@@ -54,7 +55,10 @@ async def get_server(
         return responses.not_modified()
 
     resp = Server.from_mapping(data)
-    return responses.success(resp)
+    return responses.success(
+        content=resp,
+        headers={"ETag": get_entity_tag(resp)},
+    )
 
 
 @router.get("/v1/servers")
