@@ -11,7 +11,7 @@ from fastapi import status
 from pydantic.generics import GenericModel
 
 
-def get_entity_tag(data: dict[str, Any]) -> str:
+def get_entity_tag(data: Any) -> str:
     return hashlib.md5(json.dumps(data)).hexdigest()
 
 
