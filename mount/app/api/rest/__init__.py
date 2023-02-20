@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import time
 
+from app.adapters import database
 from app.common import logger
 from app.common import settings
-from app.adapters import database
 from fastapi import FastAPI
 from fastapi import Request
 

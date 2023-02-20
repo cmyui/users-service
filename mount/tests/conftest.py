@@ -1,10 +1,10 @@
 from typing import AsyncIterator
 
 import pytest
-from app.common import settings
-from app.common.context import Context
 from app.adapters.database import dsn
 from app.adapters.database import ServiceDatabase
+from app.common import settings
+from app.common.context import Context
 
 
 # https://docs.pytest.org/en/7.1.x/reference/reference.html#globalvar-pytestmark
