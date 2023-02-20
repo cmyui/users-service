@@ -9,12 +9,12 @@ from pydantic import BaseModel as _pydantic_BaseModel
 
 
 class Status(str, Enum):
-    ACTIVE = 'active'
-    DEACTIVATED = 'deactivated'
-    DELETED = 'deleted'
+    ACTIVE = "active"
+    DEACTIVATED = "deactivated"
+    DELETED = "deleted"
 
 
-T = TypeVar('T', bound='BaseModel')
+T = TypeVar("T", bound="BaseModel")
 
 
 class BaseModel(_pydantic_BaseModel):
