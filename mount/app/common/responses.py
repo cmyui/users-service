@@ -5,6 +5,8 @@ from typing import TypeVar
 
 from app.common import json
 from app.common.errors import ServiceError
+from fastapi import Response
+from fastapi import status
 from pydantic.generics import GenericModel
 
 T = TypeVar("T")
@@ -26,6 +28,10 @@ def success(
         meta = {}
     data = {"status": "success", "data": content, "meta": meta}
     return json.ORJSONResponse(data, status_code, headers)
+
+
+def no_content(headers: dict[str, str] | None = None) -> Any:
+    return Response(status_code=status.HTTP_204_NO_CONTENT, headers=headers)
 
 
 class ErrorResponse(GenericModel, Generic[T]):

@@ -80,10 +80,10 @@ async def update_server(
 async def delete_server(
     server_id: int,
     ctx: RequestContext = Depends(),
-) -> Success[Server]:
+) -> None:
     data = await servers.delete(ctx, server_id)
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to delete server")
 
     resp = Server.from_mapping(data)
-    return responses.success(resp)
+    return responses.no_content()
