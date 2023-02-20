@@ -37,7 +37,7 @@ def success(
 
 
 def not_modified() -> Any:
-    return Response(status_code=304)
+    return Response(status_code=status.HTTP_304_NOT_MODIFIED)
 
 
 class ErrorResponse(GenericModel, Generic[T]):
