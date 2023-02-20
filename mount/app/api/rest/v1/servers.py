@@ -91,7 +91,7 @@ async def update_server(
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to update server")
 
-    if if_match and if_match != get_entity_tag(data):
+    if if_match and if_match != "*" and if_match != get_entity_tag(data):
         return responses.failure(
             error=ServiceError.SERVER_ALREADY_UPDATED,
             message="Resource has been updated since last fetch",
@@ -112,7 +112,7 @@ async def delete_server(
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to delete server")
 
-    if if_match and if_match != get_entity_tag(data):
+    if if_match and if_match != "*" and if_match != get_entity_tag(data):
         return responses.failure(
             error=ServiceError.SERVER_ALREADY_UPDATED,
             message="Resource has been updated since last fetch",
