@@ -14,7 +14,7 @@ class Status(str, Enum):
     DELETED = 'deleted'
 
 
-T = TypeVar('T', bound=type['BaseModel'])
+T = TypeVar('T', bound='BaseModel')
 
 
 class BaseModel(_pydantic_BaseModel):
@@ -22,5 +22,5 @@ class BaseModel(_pydantic_BaseModel):
         anystr_strip_whitespace = True
 
     @classmethod
-    def from_mapping(cls: T, mapping: Mapping[str, Any]) -> T:
+    def from_mapping(cls: type[T], mapping: Mapping[str, Any]) -> T:
         return cls(**{k: mapping[k] for k in cls.__fields__})
