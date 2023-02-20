@@ -11,8 +11,13 @@ from fastapi import status
 from pydantic.generics import GenericModel
 
 
-def get_entity_tag(data: Any) -> str:
-    return hashlib.md5(json.dumps(data)).hexdigest()
+def get_entity_tag(data: Any, weak: bool = False) -> str:
+    # https://httpwg.org/specs/rfc9110.html#rfc.section.8.8.3
+    etag = hashlib.md5(json.dumps(data)).hexdigest()
+    etag = f'"{etag}"'
+    if weak:
+        etag = f"W/{etag}"
+    return etag
 
 
 T = TypeVar("T")
