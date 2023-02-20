@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 
-from app.services import database
+from app.adapters import database
 
 
 class Context(ABC):

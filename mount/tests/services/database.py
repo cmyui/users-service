@@ -1,1 +1,1 @@
-from app.services.database import ServiceDatabase
+from app.adapters.database import ServiceDatabase

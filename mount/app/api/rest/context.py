@@ -1,5 +1,5 @@
 from app.common.context import Context
-from app.services import database
+from app.adapters import database
 from fastapi import Request
 
 

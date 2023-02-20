@@ -5,7 +5,7 @@ from app.common.responses import Success
 from app.models.servers import Server
 from app.models.servers import ServerInput
 from app.models.servers import ServerUpdate
-from app.usecases import servers
+from app.services import servers
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Query

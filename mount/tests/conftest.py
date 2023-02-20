@@ -3,8 +3,8 @@ from typing import AsyncIterator
 import pytest
 from app.common import settings
 from app.common.context import Context
-from app.services.database import dsn
-from app.services.database import ServiceDatabase
+from app.adapters.database import dsn
+from app.adapters.database import ServiceDatabase
 
 
 # https://docs.pytest.org/en/7.1.x/reference/reference.html#globalvar-pytestmark

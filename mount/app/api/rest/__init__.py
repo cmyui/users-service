@@ -4,7 +4,7 @@ import time
 
 from app.common import logger
 from app.common import settings
-from app.services import database
+from app.adapters import database
 from fastapi import FastAPI
 from fastapi import Request
 

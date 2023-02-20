@@ -1,15 +1,7 @@
 #!/usr/bin/make
 
-REPO_DIR = ..
-
 build: # build all containers
-	@docker build -t example-service:latest $(REPO_DIR)/example-service
-
-clone: # clone all containers
-	@if [ ! -d $(REPO_DIR)/example-service ]; then git clone git@github.com:akatsuki-v2/example-service.git $(REPO_DIR)/example-service; fi
-
-pull: # pull all containers
-	cd $(REPO_DIR)/example-service && git pull
+	@docker build -t example-service:latest .
 
 run-bg: # run all containers in the background
 	@docker-compose up -d \

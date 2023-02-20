@@ -17,7 +17,7 @@ services:
   example-service:
     image: example-service:latest
     ports:
-      - 12000:80
+      - 10000:80
     environment:
       - APP_ENV=${APP_ENV}
       - APP_COMPONENT=${APP_COMPONENT}
