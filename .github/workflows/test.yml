@@ -13,6 +13,8 @@ jobs:
     - name: run containers
       run: docker-compose up -d example-service mysql
     - name: run tests
-      run: docker-compose exec example-service echo test
+      run: |
+        docker-compose exec -T example-service echo test > abc
+        cat abc
     - name: stop containers
       run: docker-compose down
