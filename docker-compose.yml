@@ -12,7 +12,8 @@ services:
       - ./mysql:/var/lib/mysql
     ports:
       - 3306:3306
-    ## application services
+
+  ## application services
 
   example-service:
     image: example-service:latest
