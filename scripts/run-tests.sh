@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "abc"
 set -eo pipefail
 
 execDBStatement() {
