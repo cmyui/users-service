@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
 from types import TracebackType
 from typing import Any
@@ -42,7 +40,7 @@ class ServiceDatabase:
         self.read_pool = _create_pool(read_dsn, min_pool_size, max_pool_size, ssl)
         self.write_pool = _create_pool(write_dsn, min_pool_size, max_pool_size, ssl)
 
-    async def __aenter__(self) -> ServiceDatabase:
+    async def __aenter__(self) -> "ServiceDatabase":
         await self.connect()
         return self
 
