@@ -37,16 +37,10 @@ jobs:
     - name: run tests 2
       run: echo "what u p"
     - name: run tests 1
-      run: |
-        ls
-        ls -l
-        echo what
-        docker-compose exec -T example-service echo test >> abc 2>> abc || true
-        echo what2
-        ls
-        ls -l
-        cat abc
-        docker-compose logs
+      run: docker-compose exec -T example-service /scripts/run-tests.sh
+    - name: print logs
+      if: always()
+      run: docker-compose logs
     - name: stop containers
       if: always()
       run: docker-compose down
