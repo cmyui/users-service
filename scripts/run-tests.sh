@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
 echo "abc"
-set -eo pipefail
 
 execDBStatement() {
   if [[ "$DB_USE_SSL" == "true" ]]; then
