@@ -19,7 +19,7 @@ jobs:
         APP_COMPONENT: api
         APP_HOST: 0.0.0.0
         APP_PORT: 80
-        LOG_LEVEL: info
+        LOG_LEVEL: 10
         READ_DB_DRIVER: test
         READ_DB_USER: test
         READ_DB_PASS: test
