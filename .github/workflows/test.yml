@@ -36,9 +36,6 @@ jobs:
       run: docker-compose up -d example-service mysql
     - name: run tests
       run: docker-compose exec -T example-service /scripts/run-tests.sh
-    - name: print logs
-      if: always()
-      run: docker-compose logs
     - name: stop containers
       if: always()
       run: docker-compose down
