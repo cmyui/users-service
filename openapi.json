@@ -163,9 +163,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success_Server_"
-                }
+                "schema": {}
               }
             }
           },
