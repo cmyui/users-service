@@ -2,5 +2,4 @@
 __pycache__/
 mount/.coverage
 pgdata/
-mysql/
 .env

@@ -7,10 +7,6 @@ from app.common import settings
 from app.common.context import Context
 
 
-# https://docs.pytest.org/en/7.1.x/reference/reference.html#globalvar-pytestmark
-pytestmark = pytest.mark.asyncio
-
-
 class TestContext(Context):
     def __init__(self, db: ServiceDatabase) -> None:
         self._db = db

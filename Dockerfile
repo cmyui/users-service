@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11
 
 ENV PYTHONUNBUFFERED=1
 
@@ -7,7 +7,7 @@ RUN pip install -U pip setuptools
 RUN pip install -r requirements.txt
 
 RUN apt update && \
-    apt install -y default-mysql-client
+    apt install -y postgresql-client
 
 RUN wget https://github.com/golang-migrate/migrate/releases/download/v4.15.2/migrate.linux-amd64.tar.gz && \
     tar zxvf migrate.linux-amd64.tar.gz && \
@@ -23,4 +23,4 @@ WORKDIR /srv/root
 
 EXPOSE 80
 
-CMD ["/scripts/bootstrap.sh"]
+ENTRYPOINT ["/scripts/bootstrap.sh"]
