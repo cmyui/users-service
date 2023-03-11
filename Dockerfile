@@ -23,4 +23,4 @@ WORKDIR /srv/root
 
 EXPOSE 80
 
-CMD ["/scripts/bootstrap.sh"]
+ENTRYPOINT ["/scripts/bootstrap.sh"]
