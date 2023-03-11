@@ -41,7 +41,7 @@ jobs:
         ls
         ls -l
         echo what
-        docker-compose exec example-service echo test >> abc 2>> abc || true
+        docker-compose exec -T example-service echo test >> abc 2>> abc || true
         echo what2
         ls
         ls -l
