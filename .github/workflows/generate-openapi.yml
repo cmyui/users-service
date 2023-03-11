@@ -14,7 +14,9 @@ jobs:
         python-version: '3.10'
         cache: 'pip' # caching pip dependencies
     - run: pip install -r requirements.txt
-    - run: python generate-openapi.py
+    - env:
+        APP_ENV: CI
+      run: python generate-openapi.py
     - name: Commit openapi schema
       run: |
         git config --global user.name "CI"
