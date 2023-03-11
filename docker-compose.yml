@@ -3,15 +3,14 @@ version: "3.3"
 services:
   ## shared/managed services
 
-  mysql:
-    image: mysql
+  postgres:
+    image: postgres:13
     environment:
-      - MYSQL_ROOT_PASSWORD=${WRITE_DB_PASS}
-    restart: always
+      POSTGRES_PASSWORD: ${WRITE_DB_PASS}
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./pgdata:/var/lib/postgresql/data
     ports:
-      - 3306:3306
+      - 5432:5432
 
   ## application services
 
@@ -44,4 +43,4 @@ services:
       - ./mount:/srv/root
       - ./scripts:/scripts
     depends_on:
-      - mysql
+      - postgres

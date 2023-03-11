@@ -14,7 +14,8 @@ if [[ "$APP_COMPONENT" == "tests" ]]; then
     FULL_DB_NAME="${WRITE_DB_NAME}_test"
 fi
 
-DB_DSN="${WRITE_DB_DRIVER}://${WRITE_DB_USER}:${WRITE_DB_PASS}@tcp(${WRITE_DB_HOST}:${WRITE_DB_PORT})/${FULL_DB_NAME}?x-migrations-table=${MIGRATIONS_SCHEMA_TABLE}&tls=${DB_USE_SSL}"
+# TODO: support for DB_USE_SSL flag
+DB_DSN="${WRITE_DB_DRIVER}://${WRITE_DB_USER}:${WRITE_DB_PASS}@${WRITE_DB_HOST}:${WRITE_DB_PORT}/${FULL_DB_NAME}?x-migrations-table=${MIGRATIONS_SCHEMA_TABLE}&sslmode=disable"
 
 case "$1" in
     up)
