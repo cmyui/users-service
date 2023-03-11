@@ -25,4 +25,5 @@ jobs:
         ls -l
         cat abc
     - name: stop containers
+      if: always()
       run: docker-compose down
