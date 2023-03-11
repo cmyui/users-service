@@ -56,8 +56,16 @@ class ServiceDatabase:
     def connection(self) -> Connection:
         return self.read_pool.connection()
 
-    def transaction(self) -> Transaction:
-        return self.write_pool.transaction()
+    def transaction(
+        self,
+        *,
+        force_rollback: bool = False,
+        **kwargs: Any,
+    ) -> Transaction:
+        return self.write_pool.transaction(
+            force_rollback=force_rollback,
+            **kwargs,
+        )
 
     async def connect(self) -> None:
         await self.read_pool.connect()
