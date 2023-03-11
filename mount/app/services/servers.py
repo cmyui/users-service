@@ -26,7 +26,7 @@ async def create(
             hourly_request_limit,
             secret_key,
         )
-    except Exception as exc:
+    except Exception as exc:  # pragma: no cover
         await transaction.rollback()
         logger.error("Unable to create server:", error=exc)
         logger.error("Stack trace: ", error=traceback.format_exc())
