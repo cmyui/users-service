@@ -1,4 +1,3 @@
-from collections.abc import Mapping
 from types import TracebackType
 from typing import Any
 from typing import Type
@@ -70,26 +69,36 @@ class ServiceDatabase:
         self,
         query: str,
         values: dict | None = None,
-    ) -> Mapping[str, Any] | None:
+    ) -> dict[str, Any] | None:
         async with self.read_pool.connection() as connection:
-            return await connection.fetch_one(query, values)  # type: ignore
+            rec = await connection.fetch_one(query, values)
+
+        return dict(rec._mapping) if rec is not None else None
 
     async def fetch_all(
         self,
         query: str,
         values: dict | None = None,
-    ) -> list[Mapping[str, Any]]:
+    ) -> list[dict[str, Any]]:
         async with self.read_pool.connection() as connection:
-            return await connection.fetch_all(query, values)  # type: ignore
+            recs = await connection.fetch_all(query, values)
+
+        return [dict(rec._mapping) for rec in recs]
 
     async def fetch_val(self, query: str, values: dict | None = None) -> Any:
         async with self.read_pool.connection() as connection:
-            return await connection.fetch_val(query, values)  # type: ignore
+            val = await connection.fetch_val(query, values)
+
+        return val
 
     async def execute(self, query: str, values: dict | None = None) -> Any:
         async with self.write_pool.connection() as connection:
-            return await connection.execute(query, values)  # type: ignore
+            result = await connection.execute(query, values)
+
+        return result
 
     async def execute_many(self, query: str, values: list) -> None:
         async with self.write_pool.connection() as connection:
-            return await connection.execute_many(query, values)
+            await connection.execute_many(query, values)
+
+        return None
