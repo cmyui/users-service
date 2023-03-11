@@ -39,6 +39,7 @@ services:
       - MIN_DB_POOL_SIZE=${MIN_DB_POOL_SIZE}
       - MAX_DB_POOL_SIZE=${MAX_DB_POOL_SIZE}
       - DB_USE_SSL=${DB_USE_SSL}
+      - SERVICE_READINESS_TIMEOUT=${SERVICE_READINESS_TIMEOUT}
     volumes:
       - ./mount:/srv/root
       - ./scripts:/scripts
