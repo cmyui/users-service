@@ -14,6 +14,11 @@ await_service()
     done
     local end_ts=$(date +%s)
 
+    if [ $(date +%s) -ge $((start_ts + $3)) ]; then
+        echo "Timeout occurred while waiting for $1:$2 to become available"
+        exit 1
+    fi
+
     echo "$1:$2 is available after $((end_ts - start_ts)) seconds"
 }
 
