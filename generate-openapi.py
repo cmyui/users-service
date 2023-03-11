@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 import json
+import os
+import sys
 
 from fastapi.openapi.utils import get_openapi
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mount"))
 
 from mount.app.api_boot import api
 
