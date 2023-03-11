@@ -16,6 +16,25 @@ jobs:
     - run: pip install -r requirements.txt
     - env:
         APP_ENV: CI
+        APP_COMPONENT: api
+        APP_HOST: 0.0.0.0
+        APP_PORT: 80
+        LOG_LEVEL: info
+        READ_DB_DRIVER: test
+        READ_DB_USER: test
+        READ_DB_PASS: test
+        READ_DB_HOST: test
+        READ_DB_PORT: test
+        READ_DB_NAME: test
+        WRITE_DB_DRIVER: test
+        WRITE_DB_USER: test
+        WRITE_DB_PASS: test
+        WRITE_DB_HOST: test
+        WRITE_DB_PORT: test
+        WRITE_DB_NAME: test
+        MIN_DB_POOL_SIZE: 0
+        MAX_DB_POOL_SIZE: 10
+        DB_USE_SSL: false
       run: python generate-openapi.py
     - name: Commit openapi schema
       run: |
