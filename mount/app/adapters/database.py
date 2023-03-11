@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from types import TracebackType
 from typing import Any
-from typing import Mapping
 from typing import Type
 
 from databases import Database
