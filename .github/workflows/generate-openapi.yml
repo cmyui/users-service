@@ -21,13 +21,13 @@ jobs:
         APP_HOST: ${{ vars.APP_HOST }}
         APP_PORT: ${{ vars.APP_PORT }}
         LOG_LEVEL: ${{ vars.LOG_LEVEL }}
-        READ_DB_DRIVER: ${{ vars.READ_DB_DRIVER }}
+        READ_DB_SCHEME: ${{ vars.READ_DB_SCHEME }}
         READ_DB_USER: ${{ vars.READ_DB_USER }}
         READ_DB_PASS: ${{ vars.READ_DB_PASS }}
         READ_DB_HOST: ${{ vars.READ_DB_HOST }}
         READ_DB_PORT: ${{ vars.READ_DB_PORT }}
         READ_DB_NAME: ${{ vars.READ_DB_NAME }}
-        WRITE_DB_DRIVER: ${{ vars.WRITE_DB_DRIVER }}
+        WRITE_DB_SCHEME: ${{ vars.WRITE_DB_SCHEME }}
         WRITE_DB_USER: ${{ vars.WRITE_DB_USER }}
         WRITE_DB_PASS: ${{ vars.WRITE_DB_PASS }}
         WRITE_DB_HOST: ${{ vars.WRITE_DB_HOST }}

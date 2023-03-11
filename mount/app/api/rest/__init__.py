@@ -13,7 +13,7 @@ def init_db(api: FastAPI) -> None:
         logger.info("Starting up database pool")
         service_database = database.ServiceDatabase(
             read_dsn=database.dsn(
-                driver=settings.WRITE_DB_DRIVER,
+                scheme=settings.WRITE_DB_SCHEME,
                 user=settings.READ_DB_USER,
                 password=settings.READ_DB_PASS,
                 host=settings.READ_DB_HOST,
@@ -21,7 +21,7 @@ def init_db(api: FastAPI) -> None:
                 database=settings.READ_DB_NAME,
             ),
             write_dsn=database.dsn(
-                driver=settings.WRITE_DB_DRIVER,
+                scheme=settings.WRITE_DB_SCHEME,
                 user=settings.WRITE_DB_USER,
                 password=settings.WRITE_DB_PASS,
                 host=settings.WRITE_DB_HOST,

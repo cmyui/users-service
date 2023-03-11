@@ -20,7 +20,7 @@ class TestContext(Context):
 async def db() -> AsyncIterator[ServiceDatabase]:
     async with ServiceDatabase(
         write_dsn=dsn(
-            driver=settings.WRITE_DB_DRIVER,
+            scheme=settings.WRITE_DB_SCHEME,
             user=settings.WRITE_DB_USER,
             password=settings.WRITE_DB_PASS,
             host=settings.WRITE_DB_HOST,
@@ -28,7 +28,7 @@ async def db() -> AsyncIterator[ServiceDatabase]:
             database=settings.WRITE_DB_NAME,
         ),
         read_dsn=dsn(
-            driver=settings.WRITE_DB_DRIVER,
+            scheme=settings.WRITE_DB_SCHEME,
             user=settings.READ_DB_USER,
             password=settings.READ_DB_PASS,
             host=settings.READ_DB_HOST,

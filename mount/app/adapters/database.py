@@ -16,15 +16,17 @@ def _create_pool(
     return Database(url=dsn, min_size=min_pool_size, max_size=max_pool_size, ssl=ssl)
 
 
+# TODO: refactor this to support dialect/driver separation,
+#       and to leverage the robust urllib.parse.urlunparse.
 def dsn(
-    driver: str,
+    scheme: str,
     user: str,
     password: str,
     host: str,
     port: int,
     database: str,
 ) -> str:
-    return f"{driver}://{user}:{password}@{host}:{port}/{database}"
+    return f"{scheme}://{user}:{password}@{host}:{port}/{database}"
 
 
 class ServiceDatabase:
