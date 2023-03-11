@@ -34,9 +34,7 @@ jobs:
       run: docker build -t example-service:latest .
     - name: run containers
       run: docker-compose up -d example-service mysql
-    - name: run tests 2
-      run: echo "what u p"
-    - name: run tests 1
+    - name: run tests
       run: docker-compose exec -T example-service /scripts/run-tests.sh
     - name: print logs
       if: always()
