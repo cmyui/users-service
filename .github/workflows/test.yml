@@ -12,9 +12,9 @@ jobs:
       run: docker build -t example-service:latest .
     - name: run containers
       run: docker-compose up -d example-service mysql
-    - name: run tests 1
-      run: docker-compose exec -T example-service echo test > abc && echo "what up"
     - name: run tests 2
       run: echo "what u p"
+    - name: run tests 1
+      run: docker-compose exec -T example-service echo test > abc && echo "what up"
     - name: stop containers
       run: docker-compose down
