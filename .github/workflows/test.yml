@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: build application
-      run: docker build -t example-service:latest .
-    - name: run containers
-      run: docker-compose up -d example-service mysql
+    # - name: build application
+    #   run: docker build -t example-service:latest .
+    # - name: run containers
+    #   run: docker-compose up -d example-service mysql
     - name: run tests
-      run: docker-compose exec -T example-service /scripts/run-tests.sh
+      run: docker build -t example-service:latest . && docker-compose up -d example-service mysql && docker-compose exec -T example-service /scripts/run-tests.sh
     - name: stop containers
       run: docker-compose down
