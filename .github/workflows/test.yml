@@ -33,7 +33,7 @@ jobs:
     - name: build application
       run: docker build -t example-service:latest .
     - name: run containers
-      run: docker-compose up -d example-service mysql
+      run: docker-compose up -d example-service postgres
     - name: run tests
       run: docker-compose exec -T example-service /scripts/run-tests.sh
     - name: stop containers

@@ -2,19 +2,12 @@
 set -eo pipefail
 
 execDBStatement() {
-  if [[ "$DB_USE_SSL" == "true" ]]; then
-    EXTRA_PARAMS="--ssl"
-  else
-    EXTRA_PARAMS=""
-  fi
-
-  mysql \
-  --host=$WRITE_DB_HOST \
-  --port=$WRITE_DB_PORT \
-  --user=$WRITE_DB_USER \
-  --password=$WRITE_DB_PASS \
-  $EXTRA_PARAMS \
-  --execute="$1"
+  # TODO: support for DB_USE_SSL flag
+  echo "$1" | PGPASSWORD=$WRITE_DB_PASS psql \
+    --host=$WRITE_DB_HOST \
+    --port=$WRITE_DB_PORT \
+    --username=$WRITE_DB_USER \
+    --dbname=postgres
 }
 
 # await connected service availability

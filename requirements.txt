@@ -1,4 +1,4 @@
-databases[aiomysql]
+databases[asyncpg]
 fastapi[all]
 pytest
 pytest-asyncio

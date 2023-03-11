@@ -20,22 +20,13 @@ async def create(
                              status)
              VALUES (:server_name, :hourly_request_limit, :secret_key,
                      :status)
+          RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "server_name": server_name,
         "hourly_request_limit": hourly_request_limit,
         "secret_key": secret_key,
         "status": status,
-    }
-    rec_id = await ctx.db.execute(query, params)
-
-    query = f"""\
-        SELECT {READ_PARAMS}
-          FROM servers
-         WHERE server_id = :server_id
-    """
-    params: dict[str, Any] = {
-        "server_id": rec_id,
     }
     rec = await ctx.db.fetch_one(query, params)
     assert rec is not None
@@ -105,22 +96,13 @@ async def partial_update(
                updated_at = NOW()
          WHERE server_id = :server_id
            AND status = :status
+     RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "server_id": server_id,
         "server_name": server_name,
         "hourly_request_limit": hourly_request_limit,
         "status": status,
-    }
-    await ctx.db.execute(query, params)
-
-    query = f"""\
-        SELECT {READ_PARAMS}
-          FROM servers
-         WHERE server_id = :server_id
-    """
-    params: dict[str, Any] = {
-        "server_id": server_id,
     }
     rec = await ctx.db.fetch_one(query, params)
     return dict(rec) if rec is not None else None
@@ -137,23 +119,12 @@ async def delete(
                updated_at = NOW()
          WHERE server_id = :server_id
            AND status = :old_status
+     RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "server_id": server_id,
         "new_status": Status.DELETED,
         "old_status": status,
-    }
-    await ctx.db.execute(query, params)
-
-    query = f"""\
-        SELECT {READ_PARAMS}
-          FROM servers
-         WHERE server_id = :server_id
-           AND status = :new_status
-    """
-    params: dict[str, Any] = {
-        "server_id": server_id,
-        "new_status": Status.DELETED,
     }
     rec = await ctx.db.fetch_one(query, params)
     return dict(rec) if rec is not None else None

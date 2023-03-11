@@ -6,12 +6,12 @@ build: # build all containers
 run-bg: # run all containers in the background
 	docker-compose up -d \
 		example-service \
-		mysql
+		postgres
 
 run: # run all containers in the foreground
 	docker-compose up \
 		example-service \
-		mysql
+		postgres
 
 logs: # attach to the containers live to view their logs
 	docker-compose logs -f
