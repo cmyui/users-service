@@ -16,7 +16,7 @@ class TestContext(Context):
         return self._db
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 async def db() -> AsyncIterator[ServiceDatabase]:
     async with ServiceDatabase(
         write_dsn=dsn(
@@ -40,6 +40,9 @@ async def db() -> AsyncIterator[ServiceDatabase]:
         ssl=settings.DB_USE_SSL,
     ) as db:
         yield db
+
+        # TODO: is there a more automatic solution?
+        await db.execute("TRUNCATE servers")
 
 
 @pytest.fixture
