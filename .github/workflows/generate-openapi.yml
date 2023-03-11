@@ -20,18 +20,18 @@ jobs:
         APP_HOST: 0.0.0.0
         APP_PORT: 80
         LOG_LEVEL: 10
-        READ_DB_DRIVER: test
-        READ_DB_USER: test
-        READ_DB_PASS: test
-        READ_DB_HOST: test
-        READ_DB_PORT: test
-        READ_DB_NAME: test
-        WRITE_DB_DRIVER: test
-        WRITE_DB_USER: test
-        WRITE_DB_PASS: test
-        WRITE_DB_HOST: test
-        WRITE_DB_PORT: test
-        WRITE_DB_NAME: test
+        READ_DB_DRIVER: postgres
+        READ_DB_USER: postgres
+        READ_DB_PASS: abc123
+        READ_DB_HOST: localhost
+        READ_DB_PORT: 5432
+        READ_DB_NAME: test_db
+        WRITE_DB_DRIVER: postgres
+        WRITE_DB_USER: postgres
+        WRITE_DB_PASS: abc123
+        WRITE_DB_HOST: localhost
+        WRITE_DB_PORT: 5432
+        WRITE_DB_NAME: test_db
         MIN_DB_POOL_SIZE: 0
         MAX_DB_POOL_SIZE: 10
         DB_USE_SSL: false
