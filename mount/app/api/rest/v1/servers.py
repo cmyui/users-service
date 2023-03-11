@@ -9,6 +9,7 @@ from app.services import servers
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Query
+from fastapi import status
 
 router = APIRouter(tags=["Servers"])
 
@@ -27,7 +28,13 @@ async def create_server(
         return responses.failure(data, "Failed to create server")
 
     resp = Server.from_mapping(data)
-    return responses.success(resp)
+    return responses.success(
+        content=resp,
+        status_code=status.HTTP_201_CREATED,
+        headers={
+            "Location": f"/v1/servers/{resp.server_id}",
+        },
+    )
 
 
 @router.get("/v1/servers/{server_id}")

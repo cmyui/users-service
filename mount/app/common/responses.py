@@ -20,7 +20,7 @@ class Success(GenericModel, Generic[T]):
 
 def success(
     content: Any,
-    status_code: int = 200,
+    status_code: int = status.HTTP_200_OK,
     headers: dict[str, str] | None = None,
     meta: dict[str, Any] | None = None,
 ) -> Any:
@@ -43,7 +43,7 @@ class ErrorResponse(GenericModel, Generic[T]):
 def failure(
     error: ServiceError,
     message: str,
-    status_code: int = 400,
+    status_code: int = status.HTTP_400_BAD_REQUEST,
     headers: dict[str, str] | None = None,
 ) -> Any:
     data = {"status": "error", "error": error, "message": message}
