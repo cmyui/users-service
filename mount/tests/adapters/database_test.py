@@ -21,7 +21,7 @@ def test_should_create_pool():
     assert pool.url.database == "database"
     assert pool.options["min_size"] == 1
     assert pool.options["max_size"] == 10
-    assert pool.options["ssl"] == True
+    assert pool.options["ssl"] is True
 
 
 def test_should_create_dsn():

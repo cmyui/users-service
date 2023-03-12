@@ -29,14 +29,19 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
-    - name: build application
+
+    - name: Build application image
       run: docker build -t example-service:latest .
-    - name: run containers
+
+    - name: Run containers
       run: docker-compose up -d example-service postgres
-    - name: run tests
+
+    - name: Run tests
       run: docker-compose exec -T example-service /scripts/run-tests.sh
-    - name: stop containers
+
+    - name: Stop containers
       if: always()
       run: docker-compose down
