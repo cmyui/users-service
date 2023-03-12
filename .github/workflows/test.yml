@@ -3,6 +3,10 @@ name: test
 on:
   push
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   APP_ENV: ${{ vars.APP_ENV }}
   APP_COMPONENT: ${{ vars.APP_COMPONENT }}
