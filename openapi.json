@@ -116,6 +116,15 @@
             },
             "name": "server_id",
             "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "If-None-Match",
+              "type": "string"
+            },
+            "name": "if-none-match",
+            "in": "header"
           }
         ],
         "responses": {
@@ -156,6 +165,15 @@
             },
             "name": "server_id",
             "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "If-Match",
+              "type": "string"
+            },
+            "name": "if-match",
+            "in": "header"
           }
         ],
         "responses": {
@@ -196,6 +214,15 @@
             },
             "name": "server_id",
             "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "If-Match",
+              "type": "string"
+            },
+            "name": "if-match",
+            "in": "header"
           }
         ],
         "requestBody": {
