@@ -66,44 +66,6 @@
         ],
         "summary": "Create Server",
         "operationId": "create_server_v1_servers_post",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "X",
-              "type": "integer"
-            },
-            "name": "x",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Y",
-              "type": "integer"
-            },
-            "name": "y",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Z",
-              "type": "integer"
-            },
-            "name": "z",
-            "in": "query"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "A",
-              "type": "integer"
-            },
-            "name": "a",
-            "in": "query"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
