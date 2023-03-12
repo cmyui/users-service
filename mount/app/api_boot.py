@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from app.api.rest import init_api
 from app.common import logger
 from app.common import settings
