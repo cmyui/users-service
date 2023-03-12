@@ -1,7 +1,11 @@
 name: generate-openapi-schema
 
 on:
-  push
+  push:
+    paths:
+      - mount/app/api/rest/**.py
+      - mount/app/models/**.py
+      - mount/app/common/responses.py
 
 env:
   APP_ENV: ${{ vars.APP_ENV }}
