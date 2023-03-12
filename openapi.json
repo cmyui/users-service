@@ -84,6 +84,24 @@
             },
             "name": "y",
             "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Z",
+              "type": "integer"
+            },
+            "name": "z",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "A",
+              "type": "integer"
+            },
+            "name": "a",
+            "in": "query"
           }
         ],
         "requestBody": {
