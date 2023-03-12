@@ -17,10 +17,6 @@ router = APIRouter(tags=["Servers"])
 @router.post("/v1/servers")
 async def create_server(
     args: ServerInput,
-    x: int,
-    y: int,
-    z: int,
-    a: int,
     ctx: RequestContext = Depends(),
 ) -> Success[Server]:
     data = await servers.create(
