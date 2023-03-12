@@ -20,6 +20,7 @@ async def create_server(
     x: int,
     y: int,
     z: int,
+    a: int,
     ctx: RequestContext = Depends(),
 ) -> Success[Server]:
     data = await servers.create(
