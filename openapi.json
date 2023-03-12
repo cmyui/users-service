@@ -66,6 +66,26 @@
         ],
         "summary": "Create Server",
         "operationId": "create_server_v1_servers_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "X",
+              "type": "integer"
+            },
+            "name": "x",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Y",
+              "type": "integer"
+            },
+            "name": "y",
+            "in": "query"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
