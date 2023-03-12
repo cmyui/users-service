@@ -84,7 +84,7 @@ async def test_should_not_fetch_one_deleted_server(ctx: Context):
     assert data2["server_name"] == "Akatsuki"
     assert data2["hourly_request_limit"] == 100
 
-    data3 = await servers.fetch_one(ctx, server_id=1)
+    data3 = await servers.fetch_one(ctx, server_id=data["server_id"])
     assert data3 == ServiceError.SERVERS_NOT_FOUND
 
 
@@ -175,7 +175,7 @@ async def test_should_not_partial_update_deleted_server(ctx: Context):
 
     data3 = await servers.partial_update(
         ctx,
-        server_id=1,
+        server_id=data["server_id"],
         hourly_request_limit=200,
     )
     assert data3 == ServiceError.SERVERS_NOT_FOUND
@@ -217,5 +217,5 @@ async def test_should_not_delete_deleted_server(ctx: Context):
     assert data2["server_name"] == "Akatsuki"
     assert data2["hourly_request_limit"] == 100
 
-    data3 = await servers.delete(ctx, server_id=1)
+    data3 = await servers.delete(ctx, server_id=data["server_id"])
     assert data3 == ServiceError.SERVERS_NOT_FOUND
