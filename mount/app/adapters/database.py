@@ -1,8 +1,5 @@
-from __future__ import annotations
-
 from types import TracebackType
 from typing import Any
-from typing import Mapping
 from typing import Type
 
 from databases import Database
@@ -19,15 +16,17 @@ def _create_pool(
     return Database(url=dsn, min_size=min_pool_size, max_size=max_pool_size, ssl=ssl)
 
 
+# TODO: refactor this to support dialect/driver separation,
+#       and to leverage the robust urllib.parse.urlunparse.
 def dsn(
-    driver: str,
+    scheme: str,
     user: str,
     password: str,
     host: str,
     port: int,
     database: str,
 ) -> str:
-    return f"{driver}://{user}:{password}@{host}:{port}/{database}"
+    return f"{scheme}://{user}:{password}@{host}:{port}/{database}"
 
 
 class ServiceDatabase:
@@ -42,7 +41,7 @@ class ServiceDatabase:
         self.read_pool = _create_pool(read_dsn, min_pool_size, max_pool_size, ssl)
         self.write_pool = _create_pool(write_dsn, min_pool_size, max_pool_size, ssl)
 
-    async def __aenter__(self) -> ServiceDatabase:
+    async def __aenter__(self) -> "ServiceDatabase":
         await self.connect()
         return self
 
@@ -57,8 +56,16 @@ class ServiceDatabase:
     def connection(self) -> Connection:
         return self.read_pool.connection()
 
-    def transaction(self) -> Transaction:
-        return self.write_pool.transaction()
+    def transaction(
+        self,
+        *,
+        force_rollback: bool = False,
+        **kwargs: Any,
+    ) -> Transaction:
+        return self.write_pool.transaction(
+            force_rollback=force_rollback,
+            **kwargs,
+        )
 
     async def connect(self) -> None:
         await self.read_pool.connect()
@@ -72,26 +79,36 @@ class ServiceDatabase:
         self,
         query: str,
         values: dict | None = None,
-    ) -> Mapping[str, Any] | None:
+    ) -> dict[str, Any] | None:
         async with self.read_pool.connection() as connection:
-            return await connection.fetch_one(query, values)  # type: ignore
+            rec = await connection.fetch_one(query, values)
+
+        return dict(rec._mapping) if rec is not None else None
 
     async def fetch_all(
         self,
         query: str,
         values: dict | None = None,
-    ) -> list[Mapping[str, Any]]:
+    ) -> list[dict[str, Any]]:
         async with self.read_pool.connection() as connection:
-            return await connection.fetch_all(query, values)  # type: ignore
+            recs = await connection.fetch_all(query, values)
+
+        return [dict(rec._mapping) for rec in recs]
 
     async def fetch_val(self, query: str, values: dict | None = None) -> Any:
         async with self.read_pool.connection() as connection:
-            return await connection.fetch_val(query, values)  # type: ignore
+            val = await connection.fetch_val(query, values)
+
+        return val
 
     async def execute(self, query: str, values: dict | None = None) -> Any:
         async with self.write_pool.connection() as connection:
-            return await connection.execute(query, values)  # type: ignore
+            result = await connection.execute(query, values)
+
+        return result
 
     async def execute_many(self, query: str, values: list) -> None:
         async with self.write_pool.connection() as connection:
-            return await connection.execute_many(query, values)
+            await connection.execute_many(query, values)
+
+        return None

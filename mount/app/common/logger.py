@@ -12,7 +12,7 @@ from structlog.types import WrappedLogger
 
 _ROOT_LOGGER = stdlib_logging.getLogger()
 
-_REQUEST_ID_CONTEXT = ContextVar("request_id")
+_REQUEST_ID_CONTEXT: ContextVar[str | None] = ContextVar("request_id")
 
 
 def set_request_id(request_id: str | None) -> None:
@@ -72,8 +72,8 @@ def configure_logging(app_env: str, log_level: str | int) -> None:
         # defer logging control to the root logger
         logger.propagate = True
         logger.setLevel(log_level)
-        for handler in logger.handlers:
-            logger.removeHandler(handler)
+        for logger_handler in logger.handlers:
+            logger.removeHandler(logger_handler)
 
 
 def debug(*args, **kwargs) -> None:

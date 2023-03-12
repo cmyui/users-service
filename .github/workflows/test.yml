@@ -3,19 +3,23 @@ name: test
 on:
   push
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   APP_ENV: ${{ vars.APP_ENV }}
   APP_COMPONENT: ${{ vars.APP_COMPONENT }}
   APP_HOST: ${{ vars.APP_HOST }}
   APP_PORT: ${{ vars.APP_PORT }}
   LOG_LEVEL: ${{ vars.LOG_LEVEL }}
-  READ_DB_DRIVER: ${{ vars.READ_DB_DRIVER }}
+  READ_DB_SCHEME: ${{ vars.READ_DB_SCHEME }}
   READ_DB_USER: ${{ vars.READ_DB_USER }}
   READ_DB_PASS: ${{ vars.READ_DB_PASS }}
   READ_DB_HOST: ${{ vars.READ_DB_HOST }}
   READ_DB_PORT: ${{ vars.READ_DB_PORT }}
   READ_DB_NAME: ${{ vars.READ_DB_NAME }}
-  WRITE_DB_DRIVER: ${{ vars.WRITE_DB_DRIVER }}
+  WRITE_DB_SCHEME: ${{ vars.WRITE_DB_SCHEME }}
   WRITE_DB_USER: ${{ vars.WRITE_DB_USER }}
   WRITE_DB_PASS: ${{ vars.WRITE_DB_PASS }}
   WRITE_DB_HOST: ${{ vars.WRITE_DB_HOST }}
@@ -28,14 +32,19 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
-    - name: build application
+
+    - name: Build application image
       run: docker build -t example-service:latest .
-    - name: run containers
+
+    - name: Run containers
       run: docker-compose up -d example-service postgres
-    - name: run tests
+
+    - name: Run tests
       run: docker-compose exec -T example-service /scripts/run-tests.sh
-    - name: stop containers
+
+    - name: Stop containers
       if: always()
       run: docker-compose down

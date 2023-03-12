@@ -30,7 +30,7 @@ async def create(
     }
     rec = await ctx.db.fetch_one(query, params)
     assert rec is not None
-    return dict(rec)
+    return rec
 
 
 async def fetch_one(
@@ -52,7 +52,7 @@ async def fetch_one(
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
-    return dict(rec) if rec is not None else None
+    return rec
 
 
 async def fetch_many(
@@ -69,7 +69,6 @@ async def fetch_many(
     params: dict[str, Any] = {
         "status": status,
     }
-
     if page is not None and page_size is not None:
         query += """\
             LIMIT :limit
@@ -77,9 +76,8 @@ async def fetch_many(
         """
         params["limit"] = page_size
         params["offset"] = (page - 1) * page_size
-
     recs = await ctx.db.fetch_all(query, params)
-    return [dict(rec) for rec in recs]
+    return recs
 
 
 async def partial_update(
@@ -105,7 +103,7 @@ async def partial_update(
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
-    return dict(rec) if rec is not None else None
+    return rec
 
 
 async def delete(
@@ -127,4 +125,4 @@ async def delete(
         "old_status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
-    return dict(rec) if rec is not None else None
+    return rec

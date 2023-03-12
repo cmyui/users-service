@@ -15,7 +15,7 @@ if [[ "$APP_COMPONENT" == "tests" ]]; then
 fi
 
 # TODO: support for DB_USE_SSL flag
-DB_DSN="${WRITE_DB_DRIVER}://${WRITE_DB_USER}:${WRITE_DB_PASS}@${WRITE_DB_HOST}:${WRITE_DB_PORT}/${FULL_DB_NAME}?x-migrations-table=${SEEDS_SCHEMA_TABLE}&sslmode=disable"
+DB_DSN="${WRITE_DB_SCHEME}://${WRITE_DB_USER}:${WRITE_DB_PASS}@${WRITE_DB_HOST}:${WRITE_DB_PORT}/${FULL_DB_NAME}?x-migrations-table=${SEEDS_SCHEMA_TABLE}&sslmode=disable"
 
 case "$1" in
     up)

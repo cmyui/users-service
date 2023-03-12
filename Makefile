@@ -22,7 +22,7 @@ test: # run the tests
 test-dbg: # run the tests in debug mode
 	docker-compose exec example-service /scripts/run-tests.sh --dbg
 
-view-cov:
+view-cov: # open the coverage report in the browser
 	@if grep -q WSL2 /proc/sys/kernel/osrelease; then \
 		wslview mount/tests/htmlcov/index.html; \
 	else \
