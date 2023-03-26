@@ -30,12 +30,11 @@ async def create(
     if await accounts_repo.fetch_one(ctx, phone_number=phone_number):
         return ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
 
-    account_id = uuid.uuid4()
-    hashed_password = security.hash_password(password)
-
     transaction = await ctx.db.transaction()
 
     try:
+        account_id = uuid.uuid4()
+
         account = await accounts_repo.create(
             ctx,
             account_id,
@@ -44,8 +43,12 @@ async def create(
             last_name,
         )
 
+        credentials_id = uuid.uuid4()
+        hashed_password = security.hash_password(password)
+
         await credentials_repo.create(
             ctx,
+            credentials_id,
             account_id,
             phone_number,
             hashed_password,
@@ -120,13 +123,14 @@ async def delete(
         account = await accounts_repo.delete(ctx, account_id)
 
         if account is None:
+            await transaction.rollback()
             return ServiceError.ACCOUNTS_NOT_FOUND
 
         all_credentials = await credentials_repo.fetch_many(ctx, account_id=account_id)
         for credentials in all_credentials:
             deleted_credentials = await credentials_repo.delete(
                 ctx,
-                credentials["credential_id"],
+                credentials["credentials_id"],
             )
             if deleted_credentials is None:  # pragma: no cover
                 raise RuntimeError("Unable to delete credentials")

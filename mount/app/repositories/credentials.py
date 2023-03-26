@@ -13,20 +13,21 @@ READ_PARAMS = """\
 async def create(
     ctx: Context,
     credentials_id: UUID,
+    account_id: UUID,
     identifier: str,
     secret: str,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO credentials (credentials_id, identifier, secret,
-                                 status, created_at, updated_at)
-             VALUES (:credentials_id, :phone_number, :identifier,
-                     :secret, :status, NOW(),
-                     NOW())
+        INSERT INTO credentials (credentials_id, account_id, identifier,
+                                 secret, status, created_at, updated_at)
+             VALUES (:credentials_id, :account_id, :identifier,
+                     :secret, :status, NOW(), NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "credentials_id": credentials_id,
+        "account_id": account_id,
         "identifier": identifier,
         "secret": secret,
         "status": status,

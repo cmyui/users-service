@@ -4,6 +4,7 @@ CREATE TABLE credentials (
     account_id UUID NOT NULL,
     identifier TEXT NOT NULL,
     secret TEXT NOT NULL,
+    status TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
