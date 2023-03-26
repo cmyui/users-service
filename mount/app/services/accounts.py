@@ -2,19 +2,12 @@ import uuid
 from typing import Any
 from uuid import UUID
 
-import phonenumbers
 from app.common import security
 from app.common.context import Context
 from app.common.errors import ServiceError
 from app.repositories import accounts as accounts_repo
 from app.validators import accounts as accounts_validator
-
-
-def format_phone_number(phone_number: str) -> str:
-    return phonenumbers.format_number(
-        numobj=phonenumbers.parse(phone_number),
-        num_format=phonenumbers.PhoneNumberFormat.E164,
-    )
+from app.common import formatters
 
 
 async def create(
@@ -32,12 +25,13 @@ async def create(
         return ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
 
     account_id = uuid.uuid4()
+    phone_number = formatters.phone_number(phone_number)
     hashed_password = security.hash_password(password)
-    formatted_phone_number = format_phone_number(phone_number)
+
     account = await accounts_repo.create(
         ctx,
         account_id,
-        formatted_phone_number,
+        phone_number,
         hashed_password,
         first_name,
         last_name,
@@ -52,7 +46,7 @@ async def fetch_one(
     phone_number: str | None = None,
 ) -> dict[str, Any] | ServiceError:
     if phone_number is not None:
-        phone_number = format_phone_number(phone_number)
+        phone_number = formatters.phone_number(phone_number)
 
     account = await accounts_repo.fetch_one(ctx, account_id, phone_number)
 
@@ -79,7 +73,7 @@ async def partial_update(
     last_name: str | None = None,
 ) -> dict[str, Any] | ServiceError:
     if phone_number is not None:
-        phone_number = format_phone_number(phone_number)
+        phone_number = formatters.phone_number(phone_number)
 
     account = await accounts_repo.partial_update(
         ctx,
