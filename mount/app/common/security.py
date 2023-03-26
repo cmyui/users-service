@@ -1,5 +1,3 @@
-from typing import Literal
-
 import argon2
 
 ph = argon2.PasswordHasher()
