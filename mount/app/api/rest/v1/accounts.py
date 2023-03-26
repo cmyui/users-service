@@ -104,7 +104,7 @@ async def partial_update(
 async def delete(
     account_id: UUID,
     ctx: RequestContext = Depends(),
-) -> Success[Account]:
+) -> None:
     data = await accounts.delete(ctx, account_id)
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to delete account")
