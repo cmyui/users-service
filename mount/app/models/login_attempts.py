@@ -14,4 +14,5 @@ class LoginAttempt(BaseModel):
     phone_number: str
     ip_address: str
     user_agent: str
+    # TODO: should we store result? (success, failure)
     created_at: datetime

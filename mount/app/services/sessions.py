@@ -9,6 +9,7 @@ from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
 from app.repositories import accounts as accounts_repo
+from app.repositories import login_attempts as login_attempts_repo
 from app.repositories import sessions as sessions_repo
 
 
@@ -16,7 +17,18 @@ async def create(
     ctx: Context,
     phone_number: str,
     password: str,
+    ip_address: str,
+    user_agent: str,
 ) -> dict[str, Any] | ServiceError:
+    login_attempt_id = uuid.uuid4()
+    await login_attempts_repo.create(
+        ctx,
+        login_attempt_id,
+        phone_number,
+        ip_address,
+        user_agent,
+    )
+
     if not validators.validate_phone_number(phone_number):
         return ServiceError.ACCOUNTS_PHONE_NUMBER_INVALID
 
