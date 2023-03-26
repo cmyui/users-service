@@ -61,7 +61,14 @@ async def get_servers(
         return responses.failure(data, "Failed to get servers")
 
     resp = [Server.from_mapping(d) for d in data]
-    return responses.success(resp)
+    return responses.success(
+        resp,
+        meta={
+            "total": len(resp),
+            "page_size": page_size,
+            "page": page,
+        },
+    )
 
 
 @router.patch("/v1/servers/{server_id}")
