@@ -38,5 +38,4 @@ DB_USE_SSL = os.environ["DB_USE_SSL"].lower() == "true"
 
 REDIS_HOST = os.environ["REDIS_HOST"]
 REDIS_PORT = int(os.environ["REDIS_PORT"])
-REDIS_PASS = os.environ["REDIS_PASS"]
 REDIS_DB = int(os.environ["REDIS_DB"])

@@ -35,7 +35,6 @@ env:
   SERVICE_READINESS_TIMEOUT: ${{ vars.SERVICE_READINESS_TIMEOUT }}
   REDIS_HOST: ${{ vars.REDIS_HOST }}
   REDIS_PORT: ${{ vars.REDIS_PORT }}
-  REDIS_PASS: ${{ vars.REDIS_PASS }}
   REDIS_DB: ${{ vars.REDIS_DB }}
 
 jobs:

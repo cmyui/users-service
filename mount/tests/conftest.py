@@ -62,7 +62,6 @@ async def redis() -> AsyncIterator[Redis]:
     async with Redis(
         host=settings.REDIS_HOST,
         port=settings.REDIS_PORT,
-        password=settings.REDIS_PASS,
         db=settings.REDIS_DB,
     ) as redis:
         yield redis

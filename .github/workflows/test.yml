@@ -30,7 +30,6 @@ env:
   DB_USE_SSL: ${{ vars.DB_USE_SSL }}
   REDIS_HOST: ${{ vars.REDIS_HOST }}
   REDIS_PORT: ${{ vars.REDIS_PORT }}
-  REDIS_PASS: ${{ vars.REDIS_PASS }}
   REDIS_DB: ${{ vars.REDIS_DB }}
 
 jobs:

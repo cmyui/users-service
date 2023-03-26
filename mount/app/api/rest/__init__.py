@@ -52,7 +52,6 @@ def init_redis(api: FastAPI) -> None:
         redis = await aioredis.Redis(
             host=settings.REDIS_HOST,
             port=settings.REDIS_PORT,
-            password=settings.REDIS_PASS,
             db=settings.REDIS_DB,
         )
         api.state.redis = redis
