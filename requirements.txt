@@ -1,5 +1,8 @@
+argon2-cffi
 databases[asyncpg]
+email-validator
 fastapi[all]
+phonenumbers
 pytest
 pytest-asyncio
 pytest-cov
