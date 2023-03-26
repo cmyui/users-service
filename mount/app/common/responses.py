@@ -7,6 +7,7 @@ from app.common import json
 from app.common.errors import ServiceError
 from fastapi import status
 from pydantic.generics import GenericModel
+from pydantic import BaseModel
 
 T = TypeVar("T")
 
@@ -29,9 +30,9 @@ def success(
     return json.ORJSONResponse(data, status_code, headers)
 
 
-class ErrorResponse(GenericModel, Generic[T]):
+class Failure(BaseModel):
     status: Literal["error"]
-    error: T
+    error: ServiceError
     message: str
 
 
