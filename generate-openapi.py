@@ -19,3 +19,4 @@ openapi_schema = get_openapi(
 
 with open("openapi.json", "w+") as f:
     f.write(json.dumps(openapi_schema, indent=2))
+    f.write("\n")  # trailing newline
