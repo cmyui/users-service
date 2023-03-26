@@ -14,8 +14,11 @@ from fastapi import status
 router = APIRouter(tags=["Servers"])
 
 
-@router.post("/v1/servers")
-async def create_server(
+@router.post(
+    "/v1/servers",
+    status_code=status.HTTP_201_CREATED,
+)
+async def create(
     args: ServerInput,
     ctx: RequestContext = Depends(),
 ) -> Success[Server]:
@@ -38,7 +41,7 @@ async def create_server(
 
 
 @router.get("/v1/servers/{server_id}")
-async def get_server(
+async def fetch_one(
     server_id: int,
     ctx: RequestContext = Depends(),
 ) -> Success[Server]:
@@ -51,7 +54,7 @@ async def get_server(
 
 
 @router.get("/v1/servers")
-async def get_servers(
+async def fetch_many(
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=1000),
     ctx: RequestContext = Depends(),
@@ -72,7 +75,7 @@ async def get_servers(
 
 
 @router.patch("/v1/servers/{server_id}")
-async def update_server(
+async def partial_update(
     server_id: int,
     args: ServerUpdate,
     ctx: RequestContext = Depends(),
@@ -90,8 +93,11 @@ async def update_server(
     return responses.success(resp)
 
 
-@router.delete("/v1/servers/{server_id}")
-async def delete_server(
+@router.delete(
+    "/v1/servers/{server_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete(
     server_id: int,
     ctx: RequestContext = Depends(),
 ) -> None:
@@ -99,5 +105,4 @@ async def delete_server(
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to delete server")
 
-    resp = Server.from_mapping(data)
     return responses.no_content()

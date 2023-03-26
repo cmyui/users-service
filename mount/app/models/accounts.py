@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import UUID
 
 from app.models import BaseModel
 from app.models import Status
@@ -23,7 +24,7 @@ class AccountUpdate(BaseModel):
 
 
 class Account(BaseModel):
-    id: int
+    account_id: UUID
     phone_number: str
     first_name: str
     last_name: str

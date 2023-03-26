@@ -7,8 +7,8 @@ from app.common import json
 from app.common.errors import ServiceError
 from fastapi import Response
 from fastapi import status
-from pydantic.generics import GenericModel
 from pydantic import BaseModel
+from pydantic.generics import GenericModel
 
 T = TypeVar("T")
 

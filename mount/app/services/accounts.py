@@ -1,5 +1,8 @@
 import traceback
 from typing import Any
+import uuid
+
+from uuid import UUID
 
 from app.common import logger
 from app.common import security
@@ -24,36 +27,22 @@ async def create(
         return ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
 
     hashed_password = security.hash_password(password)
-
-    transaction = await ctx.db.transaction()
-
-    try:
-        # TODO: split credentials into a separate table
-        account = await accounts_repo.create(
-            ctx,
-            phone_number,
-            hashed_password,
-            first_name,
-            last_name,
-        )
-
-        # TODO: store credentials separately
-        # TODO: store login attempts
-
-    except Exception as exc:  # pragma: no cover
-        await transaction.rollback()
-        logger.error("Unable to create account:", error=exc)
-        logger.error("Stack trace: ", error=traceback.format_exc())
-        return ServiceError.ACCOUNTS_CREATION_FAILED
-    else:
-        await transaction.commit()
+    account_id = uuid.uuid4()
+    account = await accounts_repo.create(
+        ctx,
+        account_id,
+        phone_number,
+        hashed_password,
+        first_name,
+        last_name,
+    )
 
     return account
 
 
 async def fetch_one(
     ctx: Context,
-    account_id: int | None = None,
+    account_id: UUID | None = None,
     phone_number: str | None = None,
 ) -> dict[str, Any] | ServiceError:
     account = await accounts_repo.fetch_one(ctx, account_id, phone_number)
@@ -75,7 +64,7 @@ async def fetch_many(
 
 async def partial_update(
     ctx: Context,
-    account_id: int,
+    account_id: UUID,
     phone_number: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
@@ -96,7 +85,7 @@ async def partial_update(
 
 async def delete(
     ctx: Context,
-    account_id: int,
+    account_id: UUID,
 ) -> dict[str, Any] | ServiceError:
     account = await accounts_repo.delete(ctx, account_id)
 

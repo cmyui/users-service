@@ -17,6 +17,8 @@ class ServerUpdate(BaseModel):
 
 
 # output models
+
+
 class Server(BaseModel):
     server_id: int
     server_name: str

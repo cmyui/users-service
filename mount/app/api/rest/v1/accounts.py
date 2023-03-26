@@ -1,6 +1,7 @@
 from app.api.rest.context import RequestContext
 from app.common import responses
 from app.common.errors import ServiceError
+from uuid import UUID
 from app.common.responses import Success
 from app.models.accounts import Account
 from app.models.accounts import AccountUpdate
@@ -14,7 +15,10 @@ from fastapi import status
 router = APIRouter(tags=["Accounts"])
 
 
-@router.post("/v1/accounts")
+@router.post(
+    "/v1/accounts",
+    status_code=status.HTTP_201_CREATED,
+)
 async def create(
     args: SignupForm,
     ctx: RequestContext = Depends(),
@@ -34,14 +38,14 @@ async def create(
         content=resp,
         status_code=status.HTTP_201_CREATED,
         headers={
-            "Location": f"/v1/accounts/{resp.id}",
+            "Location": f"/v1/accounts/{resp.account_id}",
         },
     )
 
 
 @router.get("/v1/accounts/{account_id}")
 async def fetch_one(
-    account_id: int,
+    account_id: UUID,
     ctx: RequestContext = Depends(),
 ) -> Success[Account]:
     data = await accounts.fetch_one(ctx, account_id=account_id)
@@ -75,7 +79,7 @@ async def fetch_many(
 
 @router.patch("/v1/accounts/{account_id}")
 async def partial_update(
-    account_id: int,
+    account_id: UUID,
     args: AccountUpdate,
     ctx: RequestContext = Depends(),
 ) -> Success[Account]:
@@ -93,14 +97,16 @@ async def partial_update(
     return responses.success(resp)
 
 
-@router.delete("/v1/accounts/{account_id}")
+@router.delete(
+    "/v1/accounts/{account_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 async def delete(
-    account_id: int,
+    account_id: UUID,
     ctx: RequestContext = Depends(),
 ) -> Success[Account]:
     data = await accounts.delete(ctx, account_id)
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to delete account")
 
-    resp = Account.from_mapping(data)
-    return responses.success(resp)
+    return responses.no_content()

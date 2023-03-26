@@ -1,7 +1,6 @@
 from app.adapters import database
-
-from app.common.context import Context
 from app.common import settings
+from app.common.context import Context
 
 
 def test_should_create_pool():

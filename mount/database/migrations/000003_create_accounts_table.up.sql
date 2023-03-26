@@ -1,5 +1,6 @@
 CREATE TABLE accounts (
-    id SERIAL PRIMARY KEY,
+    rec_id SERIAL PRIMARY KEY,
+    account_id UUID NOT NULL UNIQUE,
     phone_number TEXT NOT NULL UNIQUE,
     hashed_password TEXT NOT NULL,
     first_name TEXT NOT NULL,

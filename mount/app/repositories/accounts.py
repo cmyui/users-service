@@ -1,4 +1,5 @@
 from typing import Any
+from uuid import UUID
 
 from app.common.context import Context
 from app.models import Status
@@ -11,6 +12,7 @@ READ_PARAMS = """\
 
 async def create(
     ctx: Context,
+    account_id: UUID,
     phone_number: str,
     hashed_password: str,
     first_name: str,
@@ -18,13 +20,16 @@ async def create(
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO accounts (phone_number, hashed_password, first_name, last_name,
-                              status)
-             VALUES (:phone_number, :hashed_password, :first_name, :last_name,
-                     :status)
+        INSERT INTO accounts (account_id, phone_number, hashed_password,
+                              first_name, last_name, status, created_at,
+                              updated_at)
+             VALUES (:account_id, :phone_number, :hashed_password,
+                     :first_name, :last_name, :status, NOW(),
+                     NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
+        "account_id": account_id,
         "phone_number": phone_number,
         "hashed_password": hashed_password,
         "first_name": first_name,
@@ -38,13 +43,13 @@ async def create(
 
 async def fetch_one(
     ctx: Context,
-    account_id: int | None = None,
+    account_id: UUID | None = None,
     phone_number: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
         SELECT {READ_PARAMS}
-          FROM servers
+          FROM accounts
          WHERE account_id = COALESCE(:account_id, account_id)
            AND phone_number = COALESCE(:phone_number, phone_number)
            AND status = :status
@@ -85,7 +90,7 @@ async def fetch_many(
 
 async def partial_update(
     ctx: Context,
-    account_id: int,
+    account_id: UUID,
     phone_number: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
@@ -114,7 +119,7 @@ async def partial_update(
 
 async def delete(
     ctx: Context,
-    account_id: int,
+    account_id: UUID,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
