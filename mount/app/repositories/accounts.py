@@ -14,24 +14,20 @@ async def create(
     ctx: Context,
     account_id: UUID,
     phone_number: str,
-    hashed_password: str,
     first_name: str,
     last_name: str,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO accounts (account_id, phone_number, hashed_password,
-                              first_name, last_name, status, created_at,
-                              updated_at)
-             VALUES (:account_id, :phone_number, :hashed_password,
-                     :first_name, :last_name, :status, NOW(),
-                     NOW())
+        INSERT INTO accounts (account_id, phone_number, first_name,
+                              last_name, status, created_at, updated_at)
+             VALUES (:account_id, :phone_number, :first_name,
+                     :last_name, :status, NOW(), NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "account_id": account_id,
         "phone_number": phone_number,
-        "hashed_password": hashed_password,
         "first_name": first_name,
         "last_name": last_name,
         "status": status,

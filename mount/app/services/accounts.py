@@ -40,7 +40,6 @@ async def create(
             ctx,
             account_id,
             phone_number,
-            hashed_password,
             first_name,
             last_name,
         )
