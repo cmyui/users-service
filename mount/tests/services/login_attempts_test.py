@@ -1,9 +1,10 @@
 import uuid
-from testing import sample_data
+
+from app.common import formatters
 from app.common.context import Context
 from app.common.errors import ServiceError
 from app.services import login_attempts
-from app.common import formatters
+from testing import sample_data
 
 
 async def test_should_create_login_attempt(ctx: Context):

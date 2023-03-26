@@ -1,5 +1,5 @@
-from app.common import validators
 import pytest
+from app.common import validators
 
 
 @pytest.mark.parametrize(
