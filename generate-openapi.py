@@ -5,7 +5,9 @@ import sys
 
 from fastapi.openapi.utils import get_openapi
 
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mount"))
+script_dir = os.path.dirname(os.path.abspath(__file__))
+mount_dir = os.path.join(script_dir, "mount")
+sys.path.append(mount_dir)
 
 from mount.app.api_boot import api
 
