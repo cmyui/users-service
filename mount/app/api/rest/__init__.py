@@ -60,8 +60,7 @@ def init_redis(api: FastAPI) -> None:
     @api.on_event("shutdown")
     async def shutdown_redis() -> None:
         logger.info("Shutting down redis pool")
-        api.state.redis.close()
-        await api.state.redis.wait_closed()
+        await api.state.redis.close()
         del api.state.redis
         logger.info("Redis pool shut down")
 
