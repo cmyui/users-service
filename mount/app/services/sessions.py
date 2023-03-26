@@ -30,19 +30,19 @@ async def create(
     )
 
     if not validators.validate_phone_number(phone_number):
-        return ServiceError.ACCOUNTS_PHONE_NUMBER_INVALID
+        return ServiceError.SESSIONS_PHONE_NUMBER_INVALID
 
     phone_number = formatters.phone_number(phone_number)
 
     if not validators.validate_password(password):
-        return ServiceError.ACCOUNTS_PASSWORD_INVALID
+        return ServiceError.SESSIONS_PASSWORD_INVALID
 
     account = await accounts_repo.fetch_one(ctx, phone_number=phone_number)
     if account is None:
         return ServiceError.ACCOUNTS_NOT_FOUND
 
     if not security.verify_password(password, account["password"]):
-        return ServiceError.ACCOUNTS_PASSWORD_INVALID
+        return ServiceError.SESSIONS_PASSWORD_INCORRECT
 
     session_id = uuid.uuid4()
 
@@ -62,7 +62,7 @@ async def fetch_one(
     session = await sessions_repo.fetch_one(ctx, session_id)
 
     if session is None:
-        return ServiceError.ACCOUNTS_NOT_FOUND
+        return ServiceError.SESSIONS_NOT_FOUND
 
     return session
 
@@ -88,7 +88,7 @@ async def partial_update(
     )
 
     if session is None:
-        return ServiceError.ACCOUNTS_NOT_FOUND
+        return ServiceError.SESSIONS_NOT_FOUND
 
     return session
 
@@ -100,6 +100,6 @@ async def delete(
     session = await sessions_repo.delete(ctx, session_id)
 
     if session is None:
-        return ServiceError.ACCOUNTS_NOT_FOUND
+        return ServiceError.SESSIONS_NOT_FOUND
 
     return session
