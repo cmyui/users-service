@@ -102,7 +102,7 @@ async def partial_update(
                first_name = COALESCE(:first_name, first_name),
                last_name = COALESCE(:last_name, last_name),
                updated_at = NOW()
-         WHERE server_id = :server_id
+         WHERE account_id = :account_id
            AND status = :status
      RETURNING {READ_PARAMS}
     """
