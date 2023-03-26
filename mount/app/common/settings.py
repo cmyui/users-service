@@ -6,7 +6,7 @@ load_dotenv()
 
 # asgi + app
 APP_ENV = os.environ["APP_ENV"]
-if APP_ENV == "local":
+if APP_ENV in ("local", "ci"):
     # TODO: is there a better place for this?
     import email_validator
 
