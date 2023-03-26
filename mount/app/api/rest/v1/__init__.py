@@ -1,7 +1,6 @@
 from app.api.rest.v1 import accounts
 from app.api.rest.v1 import login_attempts
 from app.api.rest.v1 import servers
-
 from fastapi import APIRouter
 
 router = APIRouter()
