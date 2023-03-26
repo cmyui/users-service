@@ -45,7 +45,7 @@ async def create(
         hashed_password=credentials["secret"],
         password=password,
     ):
-        return ServiceError.SESSIONS_PASSWORD_INCORRECT
+        return ServiceError.CREDENTIALS_INCORRECT
 
     session_id = uuid.uuid4()
 
