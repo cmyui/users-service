@@ -26,8 +26,8 @@ async def create(
     if await accounts_repo.fetch_one(ctx, phone_number=phone_number):
         return ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
 
-    hashed_password = security.hash_password(password)
     account_id = uuid.uuid4()
+    hashed_password = security.hash_password(password)
     account = await accounts_repo.create(
         ctx,
         account_id,
