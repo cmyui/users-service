@@ -8,6 +8,7 @@ from app.common.errors import ServiceError
 from fastapi import Response
 from fastapi import status
 from pydantic.generics import GenericModel
+from pydantic import BaseModel
 
 T = TypeVar("T")
 
@@ -34,9 +35,9 @@ def no_content(headers: dict[str, str] | None = None) -> Any:
     return Response(status_code=status.HTTP_204_NO_CONTENT, headers=headers)
 
 
-class ErrorResponse(GenericModel, Generic[T]):
+class Failure(BaseModel):
     status: Literal["error"]
-    error: T
+    error: ServiceError
     message: str
 
 

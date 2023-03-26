@@ -5,7 +5,7 @@ from uuid import uuid4
 from app.common import logger
 from app.common.context import Context
 from app.common.errors import ServiceError
-from app.repositories import servers
+from app.repositories import servers as servers_repo
 
 
 async def create(
@@ -13,14 +13,14 @@ async def create(
     server_name: str,
     hourly_request_limit: int,
 ) -> dict[str, Any] | ServiceError:
-    if await servers.fetch_one(ctx, server_name=server_name):
+    if await servers_repo.fetch_one(ctx, server_name=server_name):
         return ServiceError.SERVERS_NAME_ALREADY_EXISTS
 
     transaction = await ctx.db.transaction()
 
     try:
         secret_key = str(uuid4())
-        rec = await servers.create(
+        server = await servers_repo.create(
             ctx,
             server_name,
             hourly_request_limit,
@@ -30,11 +30,11 @@ async def create(
         await transaction.rollback()
         logger.error("Unable to create server:", error=exc)
         logger.error("Stack trace: ", error=traceback.format_exc())
-        return ServiceError.SERVERS_CANNOT_CREATE
+        return ServiceError.SERVERS_CREATION_FAILED
     else:
         await transaction.commit()
 
-    return rec
+    return server
 
 
 async def fetch_one(
@@ -42,12 +42,12 @@ async def fetch_one(
     server_id: int | None = None,
     server_name: str | None = None,
 ) -> dict[str, Any] | ServiceError:
-    rec = await servers.fetch_one(ctx, server_id, server_name)
+    server = await servers_repo.fetch_one(ctx, server_id, server_name)
 
-    if not rec:
+    if not server:
         return ServiceError.SERVERS_NOT_FOUND
 
-    return rec
+    return server
 
 
 async def fetch_many(
@@ -55,8 +55,8 @@ async def fetch_many(
     page: int | None = None,
     page_size: int | None = None,
 ) -> list[dict[str, Any]]:
-    recs = await servers.fetch_many(ctx, page, page_size)
-    return recs
+    servers = await servers_repo.fetch_many(ctx, page, page_size)
+    return servers
 
 
 async def partial_update(
@@ -65,26 +65,26 @@ async def partial_update(
     server_name: str | None = None,
     hourly_request_limit: int | None = None,
 ) -> dict[str, Any] | ServiceError:
-    rec = await servers.partial_update(
+    server = await servers_repo.partial_update(
         ctx,
         server_id,
         server_name,
         hourly_request_limit,
     )
 
-    if not rec:
+    if not server:
         return ServiceError.SERVERS_NOT_FOUND
 
-    return rec
+    return server
 
 
 async def delete(
     ctx: Context,
     server_id: int,
 ) -> dict[str, Any] | ServiceError:
-    rec = await servers.delete(ctx, server_id)
+    server = await servers_repo.delete(ctx, server_id)
 
-    if not rec:
+    if not server:
         return ServiceError.SERVERS_NOT_FOUND
 
-    return rec
+    return server
