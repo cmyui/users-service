@@ -1,13 +1,16 @@
+import traceback
 import uuid
 from typing import Any
 from uuid import UUID
 
 from app.common import formatters
+from app.common import logger
 from app.common import security
 from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
 from app.repositories import accounts as accounts_repo
+from app.repositories import credentials as credentials_repo
 
 
 async def create(
@@ -30,14 +33,31 @@ async def create(
     account_id = uuid.uuid4()
     hashed_password = security.hash_password(password)
 
-    account = await accounts_repo.create(
-        ctx,
-        account_id,
-        phone_number,
-        hashed_password,
-        first_name,
-        last_name,
-    )
+    transaction = await ctx.db.transaction()
+
+    try:
+        account = await accounts_repo.create(
+            ctx,
+            account_id,
+            phone_number,
+            hashed_password,
+            first_name,
+            last_name,
+        )
+
+        await credentials_repo.create(
+            ctx,
+            account_id,
+            phone_number,
+            hashed_password,
+        )
+    except Exception as exc:
+        await transaction.rollback()
+        logger.error("Unable to create account:", error=exc)
+        logger.error("Stack trace: ", error=traceback.format_exc())
+        return ServiceError.ACCOUNTS_CREATION_FAILED
+    else:
+        await transaction.commit()
 
     return account
 
