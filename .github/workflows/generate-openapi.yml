@@ -33,6 +33,10 @@ env:
   MAX_DB_POOL_SIZE: ${{ vars.MAX_DB_POOL_SIZE }}
   DB_USE_SSL: ${{ vars.DB_USE_SSL }}
   SERVICE_READINESS_TIMEOUT: ${{ vars.SERVICE_READINESS_TIMEOUT }}
+  REDIS_HOST: ${{ vars.REDIS_HOST }}
+  REDIS_PORT: ${{ vars.REDIS_PORT }}
+  REDIS_PASS: ${{ vars.REDIS_PASS }}
+  REDIS_DB: ${{ vars.REDIS_DB }}
 
 jobs:
   generate-openapi-schema:
