@@ -71,6 +71,46 @@ async def test_should_not_create_session_with_invalid_password(ctx: Context):
     assert data == ServiceError.SESSIONS_PASSWORD_INVALID
 
 
+async def test_should_not_create_session_with_nonexistent_phone_number(ctx: Context):
+    data = await sessions.create(
+        ctx,
+        phone_number=sample_data.fake_phone_number(),
+        password=sample_data.fake_password(),
+        ip_address=sample_data.fake_ipv4_address(),
+        user_agent=sample_data.fake_user_agent(),
+    )
+    assert data == ServiceError.CREDENTIALS_INCORRECT
+
+
+async def test_should_not_create_session_with_incorrect_password(ctx: Context):
+    phone_number = sample_data.fake_phone_number()
+    password = sample_data.fake_password()
+    first_name = sample_data.fake_first_name()
+    last_name = sample_data.fake_last_name()
+
+    data = await accounts.create(
+        ctx,
+        phone_number=phone_number,
+        password=password,
+        first_name=first_name,
+        last_name=last_name,
+    )
+    assert not isinstance(data, ServiceError)
+    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert "password" not in data
+    assert data["first_name"] == first_name
+    assert data["last_name"] == last_name
+
+    data2 = await sessions.create(
+        ctx,
+        phone_number=phone_number,
+        password=sample_data.fake_password(),
+        ip_address=sample_data.fake_ipv4_address(),
+        user_agent=sample_data.fake_user_agent(),
+    )
+    assert data2 == ServiceError.CREDENTIALS_INCORRECT
+
+
 async def test_should_fetch_one_session(ctx: Context):
     phone_number = sample_data.fake_phone_number()
     password = sample_data.fake_password()
