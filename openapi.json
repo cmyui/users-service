@@ -228,6 +228,49 @@
         }
       }
     },
+    "/v1/login-attempts/{login_attempt_id}": {
+      "get": {
+        "tags": [
+          "Login Attempts"
+        ],
+        "summary": "Fetch One",
+        "operationId": "fetch_one_v1_login_attempts__login_attempt_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Login Attempt Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "login_attempt_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_LoginAttempt_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/login-attempts": {
       "get": {
         "tags": [
@@ -285,88 +328,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Success_list_app.models.login_attempts.LoginAttempt__"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Login Attempts"
-        ],
-        "summary": "Create",
-        "operationId": "create_v1_login_attempts_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginAttemptInput"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success_LoginAttempt_"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/login-attempts/{login_attempt_id}": {
-      "get": {
-        "tags": [
-          "Login Attempts"
-        ],
-        "summary": "Fetch One",
-        "operationId": "fetch_one_v1_login_attempts__login_attempt_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Login Attempt Id",
-              "type": "string",
-              "format": "uuid"
-            },
-            "name": "login_attempt_id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success_LoginAttempt_"
                 }
               }
             }
@@ -938,29 +899,6 @@
             "title": "Created At",
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "LoginAttemptInput": {
-        "title": "LoginAttemptInput",
-        "required": [
-          "phone_number",
-          "ip_address",
-          "user_agent"
-        ],
-        "type": "object",
-        "properties": {
-          "phone_number": {
-            "title": "Phone Number",
-            "type": "string"
-          },
-          "ip_address": {
-            "title": "Ip Address",
-            "type": "string"
-          },
-          "user_agent": {
-            "title": "User Agent",
-            "type": "string"
           }
         }
       },
