@@ -5,15 +5,25 @@ from app.adapters.database import dsn
 from app.adapters.database import ServiceDatabase
 from app.common import settings
 from app.common.context import Context
+from redis.asyncio import Redis
 
 
 class TestContext(Context):
-    def __init__(self, db: ServiceDatabase) -> None:
+    def __init__(
+        self,
+        db: ServiceDatabase,
+        redis: Redis,
+    ) -> None:
         self._db = db
+        self._redis = redis
 
     @property
     def db(self) -> ServiceDatabase:
         return self._db
+
+    @property
+    def redis(self) -> Redis:
+        return self._redis
 
 
 @pytest.fixture(scope="function")
@@ -46,5 +56,16 @@ async def db() -> AsyncIterator[ServiceDatabase]:
 
 
 @pytest.fixture
-async def ctx(db: ServiceDatabase) -> TestContext:
-    return TestContext(db=db)
+async def redis() -> AsyncIterator[Redis]:
+    async with Redis(
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        password=settings.REDIS_PASS,
+        db=settings.REDIS_DB,
+    ) as redis:
+        yield redis
+
+
+@pytest.fixture
+async def ctx(db: ServiceDatabase, redis: Redis) -> TestContext:
+    return TestContext(db=db, redis=redis)

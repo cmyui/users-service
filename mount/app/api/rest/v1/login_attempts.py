@@ -1,10 +1,11 @@
+from uuid import UUID
+
 from app.api.rest.context import RequestContext
 from app.common import responses
 from app.common.errors import ServiceError
-from uuid import UUID
 from app.common.responses import Success
-from app.models.login_attempts import LoginAttemptInput
 from app.models.login_attempts import LoginAttempt
+from app.models.login_attempts import LoginAttemptInput
 from app.services import login_attempts
 from fastapi import APIRouter
 from fastapi import Depends

@@ -1,5 +1,6 @@
 import time
 
+import redis.asyncio as aioredis
 from app.adapters import database
 from app.common import logger
 from app.common import settings
@@ -44,6 +45,28 @@ def init_db(api: FastAPI) -> None:
         logger.info("Database pool shut down")
 
 
+def init_redis(api: FastAPI) -> None:
+    @api.on_event("startup")
+    async def startup_redis() -> None:
+        logger.info("Starting up redis pool")
+        redis = await aioredis.Redis(
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
+            password=settings.REDIS_PASS,
+            db=settings.REDIS_DB,
+        )
+        api.state.redis = redis
+        logger.info("Redis pool started up")
+
+    @api.on_event("shutdown")
+    async def shutdown_redis() -> None:
+        logger.info("Shutting down redis pool")
+        api.state.redis.close()
+        await api.state.redis.wait_closed()
+        del api.state.redis
+        logger.info("Redis pool shut down")
+
+
 def init_middlewares(api: FastAPI) -> None:
     # NOTE: these run bottom to top
 
@@ -52,6 +75,12 @@ def init_middlewares(api: FastAPI) -> None:
         async with request.app.state.db.connection() as conn:
             request.state.db = conn
             response = await call_next(request)
+        return response
+
+    @api.middleware("http")
+    async def add_redis_to_request(request: Request, call_next):
+        request.state.redis = request.app.state.redis
+        response = await call_next(request)
         return response
 
     @api.middleware("http")
@@ -73,6 +102,7 @@ def init_api():
     api = FastAPI()
 
     init_db(api)
+    init_redis(api)
     init_middlewares(api)
     init_routes(api)
 

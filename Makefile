@@ -1,16 +1,16 @@
 #!/usr/bin/make
 
 build: # build all containers
-	docker build -t example-service:latest .
+	docker build -t users-service:latest .
 
 run-bg: # run all containers in the background
 	docker-compose up -d \
-		example-service \
+		users-service \
 		postgres
 
 run: # run all containers in the foreground
 	docker-compose up \
-		example-service \
+		users-service \
 		postgres
 
 stop: # stop all containers
@@ -20,10 +20,10 @@ logs: # attach to the containers live to view their logs
 	docker-compose logs -f
 
 test: # run the tests
-	docker-compose exec example-service /scripts/run-tests.sh
+	docker-compose exec users-service /scripts/run-tests.sh
 
 test-dbg: # run the tests in debug mode
-	docker-compose exec example-service /scripts/run-tests.sh --dbg
+	docker-compose exec users-service /scripts/run-tests.sh --dbg
 
 view-cov: # open the coverage report in the browser
 	if grep -q WSL2 /proc/sys/kernel/osrelease; then \
@@ -33,7 +33,7 @@ view-cov: # open the coverage report in the browser
 	fi
 
 up-migrations: # apply up migrations from current state
-	docker-compose exec example-service /scripts/migrate-db.sh up
+	docker-compose exec users-service /scripts/migrate-db.sh up
 
 down-migrations: # apply down migrations from current state
-	docker-compose exec example-service /scripts/migrate-db.sh down
+	docker-compose exec users-service /scripts/migrate-db.sh down

@@ -1,7 +1,8 @@
+from uuid import UUID
+
 from app.api.rest.context import RequestContext
 from app.common import responses
 from app.common.errors import ServiceError
-from uuid import UUID
 from app.common.responses import Success
 from app.models.accounts import Account
 from app.models.accounts import AccountUpdate

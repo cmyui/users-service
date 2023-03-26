@@ -1,7 +1,6 @@
 import traceback
-from typing import Any
 import uuid
-
+from typing import Any
 from uuid import UUID
 
 from app.common import logger

@@ -29,3 +29,8 @@ WRITE_DB_NAME = os.environ["WRITE_DB_NAME"]
 MIN_DB_POOL_SIZE = int(os.environ["MIN_DB_POOL_SIZE"])
 MAX_DB_POOL_SIZE = int(os.environ["MAX_DB_POOL_SIZE"])
 DB_USE_SSL = os.environ["DB_USE_SSL"].lower() == "true"
+
+REDIS_HOST = os.environ["REDIS_HOST"]
+REDIS_PORT = int(os.environ["REDIS_PORT"])
+REDIS_PASS = os.environ["REDIS_PASS"]
+REDIS_DB = int(os.environ["REDIS_DB"])
