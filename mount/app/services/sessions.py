@@ -14,7 +14,7 @@ from app.repositories import accounts as accounts_repo
 from app.repositories import sessions as sessions_repo
 
 
-async def login(
+async def create(
     ctx: Context,
     phone_number: str,
     password: str,

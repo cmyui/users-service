@@ -24,7 +24,7 @@ async def create(
     args: LoginForm,
     ctx: RequestContext = Depends(),
 ) -> Success[Session]:
-    data = await sessions.login(
+    data = await sessions.create(
         ctx,
         args.phone_number,
         args.password,
