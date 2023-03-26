@@ -2,12 +2,12 @@ import uuid
 from typing import Any
 from uuid import UUID
 
+from app.common import formatters
 from app.common import security
+from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
 from app.repositories import accounts as accounts_repo
-from app.validators import accounts as accounts_validator
-from app.common import formatters
 
 
 async def create(
@@ -17,15 +17,17 @@ async def create(
     first_name: str,
     last_name: str,
 ) -> dict[str, Any] | ServiceError:
-    if not accounts_validator.validate_phone_number(phone_number):
+    if not validators.validate_phone_number(phone_number):
         return ServiceError.ACCOUNTS_PHONE_NUMBER_INVALID
-    if not accounts_validator.validate_password(password):
+
+    phone_number = formatters.phone_number(phone_number)
+
+    if not validators.validate_password(password):
         return ServiceError.ACCOUNTS_PASSWORD_INVALID
     if await accounts_repo.fetch_one(ctx, phone_number=phone_number):
         return ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
 
     account_id = uuid.uuid4()
-    phone_number = formatters.phone_number(phone_number)
     hashed_password = security.hash_password(password)
 
     account = await accounts_repo.create(

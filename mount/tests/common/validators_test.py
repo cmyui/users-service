@@ -1,4 +1,4 @@
-from app.validators import accounts
+from app.common import validators
 import pytest
 
 
@@ -20,7 +20,7 @@ import pytest
     ),
 )
 def test_validate_phone_number(phone_number: str, expected: bool):
-    result = accounts.validate_phone_number(phone_number)
+    result = validators.validate_phone_number(phone_number)
     assert result == expected
 
 
@@ -40,7 +40,7 @@ def test_validate_phone_number(phone_number: str, expected: bool):
     ),
 )
 def test_validate_email_address(email_address: str, expected: bool):
-    result = accounts.validate_email_address(email_address)
+    result = validators.validate_email_address(email_address)
     assert result == expected
 
 
@@ -62,5 +62,5 @@ def test_validate_email_address(email_address: str, expected: bool):
     ),
 )
 def test_validate_password(password: str, expected: bool):
-    result = accounts.validate_password(password)
+    result = validators.validate_password(password)
     assert result == expected

@@ -20,9 +20,8 @@ def fake_phone_number() -> str:
     ten_numbers = [random.randint(0, 9) for _ in range(10)]
     phone_number = random.choice(formats).format(*ten_numbers)
 
-    if random.choice([True, False]):
-        # TODO: add more country codes
-        phone_number = f"+1 {phone_number}"
+    # TODO: add more country codes
+    phone_number = "+1" + phone_number
 
     return phone_number
 
@@ -39,7 +38,7 @@ def fake_last_name() -> str:
     return fake.last_name()
 
 
-def fake_ip_address() -> str:
+def fake_ipv4_address() -> str:
     return fake.ipv4()
 
 
