@@ -5,7 +5,7 @@ from app.common.context import Context
 from app.models import Status
 
 READ_PARAMS = """\
-    credentials_id, account_id, identifier, passphrase,
+    credentials_id, account_id, identifier, secret,
     status, created_at, updated_at
 """
 
@@ -14,21 +14,21 @@ async def create(
     ctx: Context,
     credentials_id: UUID,
     identifier: str,
-    passphrase: str,
+    secret: str,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO credentials (credentials_id, identifier, passphrase,
+        INSERT INTO credentials (credentials_id, identifier, secret,
                                  status, created_at, updated_at)
              VALUES (:credentials_id, :phone_number, :identifier,
-                     :passphrase, :status, NOW(),
+                     :secret, :status, NOW(),
                      NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "credentials_id": credentials_id,
         "identifier": identifier,
-        "passphrase": passphrase,
+        "secret": secret,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
@@ -83,7 +83,7 @@ async def fetch_many(
     return recs
 
 
-# credentials_id, account_id, identifier, passphrase,
+# credentials_id, account_id, identifier, secret,
 # status, created_at, updated_at
 
 
@@ -91,13 +91,13 @@ async def partial_update(
     ctx: Context,
     credentials_id: UUID,
     identifier: str | None = None,
-    passphrase: str | None = None,
+    secret: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
         UPDATE credentials
            SET identifier = COALESCE(:identifier, identifier),
-               passphrase = COALESCE(:passphrase, passphrase),
+               secret = COALESCE(:secret, secret),
                updated_at = NOW()
          WHERE credentials_id = :credentials_id
            AND status = :status
@@ -106,7 +106,7 @@ async def partial_update(
     params: dict[str, Any] = {
         "credentials_id": credentials_id,
         "identifier": identifier,
-        "passphrase": passphrase,
+        "secret": secret,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
