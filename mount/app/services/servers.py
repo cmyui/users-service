@@ -30,7 +30,7 @@ async def create(
         await transaction.rollback()
         logger.error("Unable to create server:", error=exc)
         logger.error("Stack trace: ", error=traceback.format_exc())
-        return ServiceError.SERVERS_CANNOT_CREATE
+        return ServiceError.SERVERS_CREATION_FAILED
     else:
         await transaction.commit()
 
