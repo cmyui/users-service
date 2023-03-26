@@ -5,13 +5,353 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/v1/accounts": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Fetch Many",
+        "operationId": "fetch_many_v1_accounts_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Size",
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "page_size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_list_app.models.accounts.Account__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Create",
+        "operationId": "create_v1_accounts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_Account_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/accounts/{account_id}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Fetch One",
+        "operationId": "fetch_one_v1_accounts__account_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Account Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "account_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_Account_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Delete",
+        "operationId": "delete_v1_accounts__account_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Account Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "account_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Partial Update",
+        "operationId": "partial_update_v1_accounts__account_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Account Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "account_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_Account_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/login-attempts/{login_attempt_id}": {
+      "get": {
+        "tags": [
+          "Login Attempts"
+        ],
+        "summary": "Fetch One",
+        "operationId": "fetch_one_v1_login_attempts__login_attempt_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Login Attempt Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "login_attempt_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_LoginAttempt_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/login-attempts": {
+      "get": {
+        "tags": [
+          "Login Attempts"
+        ],
+        "summary": "Fetch Many",
+        "operationId": "fetch_many_v1_login_attempts_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Phone Number",
+              "type": "string"
+            },
+            "name": "phone_number",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Ip Address",
+              "type": "string"
+            },
+            "name": "ip_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Size",
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "page_size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_list_app.models.login_attempts.LoginAttempt__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/servers": {
       "get": {
         "tags": [
           "Servers"
         ],
-        "summary": "Get Servers",
-        "operationId": "get_servers_v1_servers_get",
+        "summary": "Fetch Many",
+        "operationId": "fetch_many_v1_servers_get",
         "parameters": [
           {
             "required": false,
@@ -64,8 +404,8 @@
         "tags": [
           "Servers"
         ],
-        "summary": "Create Server",
-        "operationId": "create_server_v1_servers_post",
+        "summary": "Create",
+        "operationId": "create_v1_servers_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -77,7 +417,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -105,8 +445,8 @@
         "tags": [
           "Servers"
         ],
-        "summary": "Get Server",
-        "operationId": "get_server_v1_servers__server_id__get",
+        "summary": "Fetch One",
+        "operationId": "fetch_one_v1_servers__server_id__get",
         "parameters": [
           {
             "required": true,
@@ -145,8 +485,8 @@
         "tags": [
           "Servers"
         ],
-        "summary": "Delete Server",
-        "operationId": "delete_server_v1_servers__server_id__delete",
+        "summary": "Delete",
+        "operationId": "delete_v1_servers__server_id__delete",
         "parameters": [
           {
             "required": true,
@@ -159,13 +499,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -183,8 +518,8 @@
         "tags": [
           "Servers"
         ],
-        "summary": "Update Server",
-        "operationId": "update_server_v1_servers__server_id__patch",
+        "summary": "Partial Update",
+        "operationId": "partial_update_v1_servers__server_id__patch",
         "parameters": [
           {
             "required": true,
@@ -229,10 +564,296 @@
           }
         }
       }
+    },
+    "/v1/sessions": {
+      "get": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Fetch Many",
+        "operationId": "fetch_many_v1_sessions_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Page",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Size",
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "page_size",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_list_app.models.sessions.Session__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Create",
+        "operationId": "create_v1_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_Session_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{session_id}": {
+      "get": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Fetch One",
+        "operationId": "fetch_one_v1_sessions__session_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "session_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_Session_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Delete",
+        "operationId": "delete_v1_sessions__session_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "session_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Partial Update",
+        "operationId": "partial_update_v1_sessions__session_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "session_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success_Session_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Account": {
+        "title": "Account",
+        "required": [
+          "account_id",
+          "phone_number",
+          "first_name",
+          "last_name",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "title": "Account Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "phone_number": {
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AccountUpdate": {
+        "title": "AccountUpdate",
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          }
+        }
+      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -243,6 +864,59 @@
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             }
+          }
+        }
+      },
+      "LoginAttempt": {
+        "title": "LoginAttempt",
+        "required": [
+          "login_attempt_id",
+          "phone_number",
+          "ip_address",
+          "user_agent",
+          "created_at"
+        ],
+        "type": "object",
+        "properties": {
+          "login_attempt_id": {
+            "title": "Login Attempt Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "phone_number": {
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "ip_address": {
+            "title": "Ip Address",
+            "type": "string"
+          },
+          "user_agent": {
+            "title": "User Agent",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LoginForm": {
+        "title": "LoginForm",
+        "required": [
+          "phone_number",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
           }
         }
       },
@@ -317,6 +991,76 @@
           }
         }
       },
+      "Session": {
+        "title": "Session",
+        "required": [
+          "session_id",
+          "expires_at",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "expires_at": {
+            "title": "Expires At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SessionUpdate": {
+        "title": "SessionUpdate",
+        "type": "object",
+        "properties": {
+          "expires_at": {
+            "title": "Expires At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SignupForm": {
+        "title": "SignupForm",
+        "required": [
+          "phone_number",
+          "password",
+          "first_name",
+          "last_name"
+        ],
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          }
+        }
+      },
       "Status": {
         "title": "Status",
         "enum": [
@@ -326,6 +1070,56 @@
         ],
         "type": "string",
         "description": "An enumeration."
+      },
+      "Success_Account_": {
+        "title": "Success[Account]",
+        "required": [
+          "status",
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "enum": [
+              "success"
+            ],
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Success_LoginAttempt_": {
+        "title": "Success[LoginAttempt]",
+        "required": [
+          "status",
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "enum": [
+              "success"
+            ],
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginAttempt"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
       },
       "Success_Server_": {
         "title": "Success[Server]",
@@ -345,6 +1139,89 @@
           },
           "data": {
             "$ref": "#/components/schemas/Server"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Success_Session_": {
+        "title": "Success[Session]",
+        "required": [
+          "status",
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "enum": [
+              "success"
+            ],
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Session"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Success_list_app.models.accounts.Account__": {
+        "title": "Success[list[app.models.accounts.Account]]",
+        "required": [
+          "status",
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "enum": [
+              "success"
+            ],
+            "type": "string"
+          },
+          "data": {
+            "title": "Data",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Success_list_app.models.login_attempts.LoginAttempt__": {
+        "title": "Success[list[app.models.login_attempts.LoginAttempt]]",
+        "required": [
+          "status",
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "enum": [
+              "success"
+            ],
+            "type": "string"
+          },
+          "data": {
+            "title": "Data",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoginAttempt"
+            }
           },
           "meta": {
             "title": "Meta",
@@ -373,6 +1250,35 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Server"
+            }
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Success_list_app.models.sessions.Session__": {
+        "title": "Success[list[app.models.sessions.Session]]",
+        "required": [
+          "status",
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "enum": [
+              "success"
+            ],
+            "type": "string"
+          },
+          "data": {
+            "title": "Data",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Session"
             }
           },
           "meta": {

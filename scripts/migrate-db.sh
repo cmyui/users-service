@@ -26,7 +26,7 @@ case "$1" in
 
     down)
         echo "Running migrations (down)"
-        yes | go-migrate -source "file://${MIGRATIONS_PATH}" -database $DB_DSN $@
+        go-migrate -source "file://${MIGRATIONS_PATH}" -database $DB_DSN $@
         echo "Ran migrations successfully"
     ;;
 

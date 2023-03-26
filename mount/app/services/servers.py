@@ -44,7 +44,7 @@ async def fetch_one(
 ) -> dict[str, Any] | ServiceError:
     server = await servers_repo.fetch_one(ctx, server_id, server_name)
 
-    if not server:
+    if server is None:
         return ServiceError.SERVERS_NOT_FOUND
 
     return server
@@ -72,7 +72,7 @@ async def partial_update(
         hourly_request_limit,
     )
 
-    if not server:
+    if server is None:
         return ServiceError.SERVERS_NOT_FOUND
 
     return server
@@ -84,7 +84,7 @@ async def delete(
 ) -> dict[str, Any] | ServiceError:
     server = await servers_repo.delete(ctx, server_id)
 
-    if not server:
+    if server is None:
         return ServiceError.SERVERS_NOT_FOUND
 
     return server
