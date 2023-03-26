@@ -51,7 +51,7 @@ async def create(
             phone_number,
             hashed_password,
         )
-    except Exception as exc:
+    except Exception as exc:  # pragma: no cover
         await transaction.rollback()
         logger.error("Unable to create account:", error=exc)
         logger.error("Stack trace: ", error=traceback.format_exc())
@@ -115,9 +115,29 @@ async def delete(
     ctx: Context,
     account_id: UUID,
 ) -> dict[str, Any] | ServiceError:
-    account = await accounts_repo.delete(ctx, account_id)
+    transaction = await ctx.db.transaction()
 
-    if account is None:
-        return ServiceError.ACCOUNTS_NOT_FOUND
+    try:
+        account = await accounts_repo.delete(ctx, account_id)
+
+        if account is None:
+            return ServiceError.ACCOUNTS_NOT_FOUND
+
+        all_credentials = await credentials_repo.fetch_many(ctx, account_id=account_id)
+        for credentials in all_credentials:
+            deleted_credentials = await credentials_repo.delete(
+                ctx,
+                credentials["credential_id"],
+            )
+            if deleted_credentials is None:  # pragma: no cover
+                raise RuntimeError("Unable to delete credentials")
+
+    except Exception as exc:  # pragma: no cover
+        await transaction.rollback()
+        logger.error("Unable to delete account:", error=exc)
+        logger.error("Stack trace: ", error=traceback.format_exc())
+        return ServiceError.ACCOUNTS_DELETION_FAILED
+    else:
+        await transaction.commit()
 
     return account
