@@ -107,12 +107,6 @@ async def partial_update(
     if not kwargs:
         return session
 
-    # "session_id": str(session_id),
-    # "account_id": str(account_id),
-    # "expires_at": expires_at.isoformat(),
-    # "created_at": now.isoformat(),
-    # "updated_at": now.isoformat(),
-
     session = dict(session)
 
     expires_at = kwargs.get("expires_at")
