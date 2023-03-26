@@ -39,17 +39,20 @@ async def create(
 
 async def fetch_one(
     ctx: Context,
-    credentials_id: UUID,
+    credentials_id: UUID | None = None,
+    identifier: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
         SELECT {READ_PARAMS}
           FROM credentials
-         WHERE credentials_id = :credentials_id
+         WHERE credentials_id = COALESCE(:credentials_id, credentials_id)
+           AND identifier = COALESCE(:identifier, identifier)
            AND status = :status
     """
     params: dict[str, Any] = {
         "credentials_id": credentials_id,
+        "identifier": identifier,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)

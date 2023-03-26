@@ -16,10 +16,10 @@ class ServiceError(str, Enum):
     ACCOUNTS_PHONE_NUMBER_EXISTS = "accounts.phone_number_exists"
     ACCOUNTS_USERNAME_EXISTS = "accounts.username_exists"
 
-    # CREDENTIALS_CREATION_FAILED = "credentials.creation_failed"
-    # CREDENTIALS_DELETION_FAILED = "credentials.deletion_failed"
-    # CREDENTIALS_NOT_FOUND = "credentials.incorrect_credentials"
-    # CREDENTIALS_INCORRECT = "credentials.incorrect_credentials"
+    CREDENTIALS_CREATION_FAILED = "credentials.creation_failed"
+    CREDENTIALS_DELETION_FAILED = "credentials.deletion_failed"
+    CREDENTIALS_NOT_FOUND = "credentials.incorrect_credentials"
+    CREDENTIALS_INCORRECT = "credentials.incorrect_credentials"
 
     SESSIONS_CREATION_FAILED = "sessions.creation_failed"
     SESSIONS_DELETION_FAILED = "sessions.deletion_failed"

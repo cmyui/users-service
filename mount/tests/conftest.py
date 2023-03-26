@@ -58,7 +58,7 @@ async def db() -> AsyncIterator[ServiceDatabase]:
         await db.execute("TRUNCATE credentials")
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 async def redis() -> AsyncIterator[Redis]:
     async with Redis(
         host=settings.REDIS_HOST,
@@ -66,6 +66,8 @@ async def redis() -> AsyncIterator[Redis]:
         db=settings.REDIS_DB,
     ) as redis:
         yield redis
+
+        await redis.flushdb()
 
 
 @pytest.fixture

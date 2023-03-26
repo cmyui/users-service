@@ -8,7 +8,7 @@ from app.common import security
 from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
-from app.repositories import accounts as accounts_repo
+from app.repositories import credentials as credentials_repo
 from app.repositories import login_attempts as login_attempts_repo
 from app.repositories import sessions as sessions_repo
 
@@ -37,11 +37,14 @@ async def create(
     if not validators.validate_password(password):
         return ServiceError.SESSIONS_PASSWORD_INVALID
 
-    account = await accounts_repo.fetch_one(ctx, phone_number=phone_number)
-    if account is None:
-        return ServiceError.ACCOUNTS_NOT_FOUND
+    credentials = await credentials_repo.fetch_one(ctx, identifier=phone_number)
+    if credentials is None:
+        return ServiceError.CREDENTIALS_NOT_FOUND
 
-    if not security.verify_password(password, account["password"]):
+    if not security.verify_password(
+        hashed_password=credentials["secret"],
+        password=password,
+    ):
         return ServiceError.SESSIONS_PASSWORD_INCORRECT
 
     session_id = uuid.uuid4()
@@ -49,7 +52,7 @@ async def create(
     session = await sessions_repo.create(
         ctx,
         session_id,
-        account["account_id"],
+        credentials["account_id"],
     )
 
     return session
@@ -69,10 +72,11 @@ async def fetch_one(
 
 async def fetch_many(
     ctx: Context,
+    account_id: UUID | None = None,
     page: int = 1,
     page_size: int = 50,
 ) -> list[dict[str, Any]]:
-    sessions = await sessions_repo.fetch_many(ctx, page, page_size)
+    sessions = await sessions_repo.fetch_many(ctx, account_id, page, page_size)
     return sessions
 
 
