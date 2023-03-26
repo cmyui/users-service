@@ -6,6 +6,12 @@ load_dotenv()
 
 # asgi + app
 APP_ENV = os.environ["APP_ENV"]
+if APP_ENV == "local":
+    # TODO: is there a better place for this?
+    import email_validator
+
+    email_validator.TEST_ENVIRONMENT = True
+
 APP_COMPONENT = os.environ["APP_COMPONENT"]
 APP_HOST = os.environ["APP_HOST"]
 APP_PORT = int(os.environ["APP_PORT"])
