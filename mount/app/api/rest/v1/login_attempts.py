@@ -5,41 +5,12 @@ from app.common import responses
 from app.common.errors import ServiceError
 from app.common.responses import Success
 from app.models.login_attempts import LoginAttempt
-from app.models.login_attempts import LoginAttemptInput
 from app.services import login_attempts
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Query
-from fastapi import status
 
 router = APIRouter(tags=["Login Attempts"])
-
-
-@router.post(
-    "/v1/login-attempts",
-    status_code=status.HTTP_201_CREATED,
-)
-async def create(
-    args: LoginAttemptInput,
-    ctx: RequestContext = Depends(),
-) -> Success[LoginAttempt]:
-    data = await login_attempts.create(
-        ctx,
-        args.phone_number,
-        args.ip_address,
-        args.user_agent,
-    )
-    if isinstance(data, ServiceError):
-        return responses.failure(data, "Failed to create account")
-
-    resp = LoginAttempt.from_mapping(data)
-    return responses.success(
-        content=resp,
-        status_code=status.HTTP_201_CREATED,
-        headers={
-            "Location": f"/v1/login-attempts/{resp.login_attempt_id}",
-        },
-    )
 
 
 @router.get("/v1/login-attempts/{login_attempt_id}")

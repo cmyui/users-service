@@ -6,12 +6,6 @@ from app.models import BaseModel
 # input models
 
 
-class LoginAttemptInput(BaseModel):
-    phone_number: str
-    ip_address: str
-    user_agent: str
-
-
 # output models
 
 
