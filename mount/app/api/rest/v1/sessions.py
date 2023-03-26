@@ -4,9 +4,9 @@ from app.api.rest.context import RequestContext
 from app.common import responses
 from app.common.errors import ServiceError
 from app.common.responses import Success
+from app.models.sessions import LoginForm
 from app.models.sessions import Session
 from app.models.sessions import SessionUpdate
-from app.models.sessions import LoginForm
 from app.services import sessions
 from fastapi import APIRouter
 from fastapi import Depends

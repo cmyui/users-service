@@ -3,14 +3,12 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-
 from app.common import formatters
 from app.common import security
 from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
 from app.repositories import accounts as accounts_repo
-
 from app.repositories import sessions as sessions_repo
 
 
