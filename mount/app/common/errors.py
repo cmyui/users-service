@@ -25,9 +25,7 @@ class ServiceError(str, Enum):
     SESSIONS_DELETION_FAILED = "sessions.deletion_failed"
     SESSIONS_NOT_FOUND = "sessions.not_found"
 
-
-    LOGIN_ATTEMPTS_NOT_FOUND =
-    LOGIN_ATTEMPTS_CREATION_FAILED =
-    LOGIN_ATTEMPTS_ =
-    LOGIN_ATTEMPTS_ =
-    LOGIN_ATTEMPTS_ =
+    LOGIN_ATTEMPTS_NOT_FOUND = "login_attempts.attempt_not_found"
+    LOGIN_ATTEMPTS_CREATION_FAILED = "login_attempts.creation_failed"
+    LOGIN_ATTEMPTS_DELETION_FAILED = "login_attempts.deletion_failed"
+    LOGIN_ATTEMPTS_PHONE_NUMBER_INVALID = "login_attempts.phone_number_invalid"
