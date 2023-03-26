@@ -24,16 +24,16 @@ def create_session_key(session_id: UUID | Literal["*"]) -> str:
 async def create(
     ctx: Context,
     session_id: UUID,
-    account_id: int,
+    account_id: UUID,
 ) -> dict[str, Any]:
     now = datetime.now()
     expires_at = now + timedelta(seconds=SESSION_EXPIRY)
     session = {
-        "session_id": session_id,
-        "account_id": account_id,
-        "expires_at": expires_at,
-        "created_at": now,
-        "updated_at": now,
+        "session_id": str(session_id),
+        "account_id": str(account_id),
+        "expires_at": expires_at.isoformat(),
+        "created_at": now.isoformat(),
+        "updated_at": now.isoformat(),
     }
     await ctx.redis.setex(
         name=create_session_key(session_id),
@@ -52,7 +52,7 @@ async def fetch_one(ctx: Context, session_id: UUID) -> dict[str, Any] | None:
 
 async def fetch_many(
     ctx: Context,
-    account_id: int | None = None,
+    account_id: UUID | None = None,
     page: int = 1,
     page_size: int = 50,
 ) -> list[dict[str, Any]]:
@@ -83,12 +83,14 @@ async def fetch_many(
 
             session = json.loads(raw_session)
 
-            if account_id is not None and session["account_id"] != account_id:
+            if account_id is not None and session["account_id"] != str(account_id):
                 continue
 
             sessions.append(session)
 
-    return sessions
+    # redis does not guarantee the count of keys returned
+    # https://redis.io/commands/scan/#the-count-option
+    return sessions[:page_size]
 
 
 async def partial_update(
@@ -106,12 +108,17 @@ async def partial_update(
         return session
 
     session = dict(session)
-    session.update(kwargs)
-    session["updated_at"] = datetime.now()
+
+    expires_at = kwargs.get("expires_at")
+
+    if expires_at is not None:
+        session["expires_at"] = expires_at.isoformat()
+
+    session["updated_at"] = datetime.now().isoformat()
 
     await ctx.redis.set(create_session_key(session_id), json.dumps(session))
 
-    if expires_at := kwargs.get("expires_at"):
+    if expires_at is not None:
         await ctx.redis.expireat(create_session_key(session_id), expires_at)
 
     return session

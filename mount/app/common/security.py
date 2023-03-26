@@ -1,8 +1,8 @@
 from typing import Literal
 
-from argon2 import PasswordHasher
+import argon2
 
-ph = PasswordHasher()
+ph = argon2.PasswordHasher()
 
 
 def hash_password(password: str | bytes) -> str:
@@ -12,5 +12,10 @@ def hash_password(password: str | bytes) -> str:
 def verify_password(
     hashed_password: str | bytes,
     password: str | bytes,
-) -> Literal[True]:
-    return ph.verify(hashed_password, password)
+) -> bool:
+    try:
+        ph.verify(hashed_password, password)
+    except argon2.exceptions.VerifyMismatchError:
+        return False
+    else:
+        return True

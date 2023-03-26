@@ -43,9 +43,16 @@ export PYTHONDONTWRITEBYTECODE=1
 export PYTHONPATH=$PYTHONPATH:/srv/root
 cd /srv/root
 
+if [ "$APP_ENV" == "local" ]; then
+  EXTRA_PARAMS="--pdb"
+else
+  EXTRA_PARAMS=""
+fi
+
 exec pytest tests/ \
     --cov-config=tests/coverage.ini \
     --cov=app \
     --cov-report=term \
     --cov-report=html:tests/htmlcov \
-    --pdb -vv
+    -vv \
+    $EXTRA_PARAMS
