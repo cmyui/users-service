@@ -35,7 +35,7 @@ async def test_should_not_create_account_with_invalid_phone_number(ctx: Context)
         first_name=sample_data.fake_first_name(),
         last_name=sample_data.fake_last_name(),
     )
-    assert data == ServiceError.ACCOUNTS_PHONE_NUMBER_INVALID
+    assert data is ServiceError.ACCOUNTS_PHONE_NUMBER_INVALID
 
 
 async def test_should_not_create_account_with_invalid_password(ctx: Context):
@@ -46,7 +46,7 @@ async def test_should_not_create_account_with_invalid_password(ctx: Context):
         first_name=sample_data.fake_first_name(),
         last_name=sample_data.fake_last_name(),
     )
-    assert data == ServiceError.ACCOUNTS_PASSWORD_INVALID
+    assert data is ServiceError.ACCOUNTS_PASSWORD_INVALID
 
 
 async def test_should_not_create_account_with_preexisting_phone_number(ctx: Context):
@@ -75,7 +75,7 @@ async def test_should_not_create_account_with_preexisting_phone_number(ctx: Cont
         first_name=first_name,
         last_name=last_name,
     )
-    assert data2 == ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
+    assert data2 is ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
 
 
 async def test_should_fetch_one_account_by_id(ctx: Context):
@@ -134,7 +134,7 @@ async def test_should_fetch_one_account_by_phone_number(ctx: Context):
 
 async def test_should_not_fetch_one_nonexistent_account(ctx: Context):
     data = await accounts.fetch_one(ctx, account_id=uuid.uuid4())
-    assert data == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data is ServiceError.ACCOUNTS_NOT_FOUND
 
 
 async def test_should_not_fetch_one_deleted_account_by_id(ctx: Context):
@@ -164,7 +164,7 @@ async def test_should_not_fetch_one_deleted_account_by_id(ctx: Context):
     assert data2["last_name"] == last_name
 
     data3 = await accounts.fetch_one(ctx, account_id=data["account_id"])
-    assert data3 == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data3 is ServiceError.ACCOUNTS_NOT_FOUND
 
 
 async def test_should_not_fetch_one_deleted_account_by_phone_number(ctx: Context):
@@ -194,7 +194,7 @@ async def test_should_not_fetch_one_deleted_account_by_phone_number(ctx: Context
     assert data2["last_name"] == last_name
 
     data3 = await accounts.fetch_one(ctx, phone_number=data["phone_number"])
-    assert data3 == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data3 is ServiceError.ACCOUNTS_NOT_FOUND
 
 
 async def test_should_fetch_all_accounts(ctx: Context):
@@ -304,7 +304,7 @@ async def test_should_not_partial_update_nonexistent_account(ctx: Context):
         account_id=uuid.uuid4(),
         phone_number=sample_data.fake_phone_number(),
     )
-    assert data == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data is ServiceError.ACCOUNTS_NOT_FOUND
 
 
 async def test_should_not_partial_update_deleted_account(ctx: Context):
@@ -338,7 +338,7 @@ async def test_should_not_partial_update_deleted_account(ctx: Context):
         account_id=data["account_id"],
         phone_number=sample_data.fake_phone_number(),
     )
-    assert data3 == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data3 is ServiceError.ACCOUNTS_NOT_FOUND
 
 
 async def test_should_delete_account(ctx: Context):
@@ -370,7 +370,7 @@ async def test_should_delete_account(ctx: Context):
 
 async def test_should_not_delete_nonexistent_account(ctx: Context):
     data = await accounts.delete(ctx, account_id=uuid.uuid4())
-    assert data == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data is ServiceError.ACCOUNTS_NOT_FOUND
 
 
 async def test_should_not_delete_deleted_account(ctx: Context):
@@ -400,4 +400,4 @@ async def test_should_not_delete_deleted_account(ctx: Context):
     assert data2["last_name"] == last_name
 
     data3 = await accounts.delete(ctx, account_id=data["account_id"])
-    assert data3 == ServiceError.ACCOUNTS_NOT_FOUND
+    assert data3 is ServiceError.ACCOUNTS_NOT_FOUND

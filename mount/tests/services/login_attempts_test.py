@@ -31,7 +31,7 @@ async def test_should_not_create_login_attempt_with_invalid_phone_number(ctx: Co
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data == ServiceError.LOGIN_ATTEMPTS_PHONE_NUMBER_INVALID
+    assert data is ServiceError.LOGIN_ATTEMPTS_PHONE_NUMBER_INVALID
 
 
 async def test_should_fetch_one_login_attempt_by_id(ctx: Context):
@@ -61,7 +61,7 @@ async def test_should_fetch_one_login_attempt_by_id(ctx: Context):
 
 async def test_should_not_fetch_one_nonexistent_login_attempt(ctx: Context):
     data = await login_attempts.fetch_one(ctx, login_attempt_id=uuid.uuid4())
-    assert data == ServiceError.LOGIN_ATTEMPTS_NOT_FOUND
+    assert data is ServiceError.LOGIN_ATTEMPTS_NOT_FOUND
 
 
 async def test_should_fetch_all_login_attempts(ctx: Context):

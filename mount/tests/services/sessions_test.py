@@ -57,7 +57,7 @@ async def test_should_not_create_session_with_invalid_phone_number(ctx: Context)
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data == ServiceError.SESSIONS_PHONE_NUMBER_INVALID
+    assert data is ServiceError.SESSIONS_PHONE_NUMBER_INVALID
 
 
 async def test_should_not_create_session_with_invalid_password(ctx: Context):
@@ -68,7 +68,7 @@ async def test_should_not_create_session_with_invalid_password(ctx: Context):
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data == ServiceError.SESSIONS_PASSWORD_INVALID
+    assert data is ServiceError.SESSIONS_PASSWORD_INVALID
 
 
 async def test_should_not_create_session_with_nonexistent_phone_number(ctx: Context):
@@ -79,7 +79,7 @@ async def test_should_not_create_session_with_nonexistent_phone_number(ctx: Cont
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data == ServiceError.CREDENTIALS_INCORRECT
+    assert data is ServiceError.CREDENTIALS_INCORRECT
 
 
 async def test_should_not_create_session_with_incorrect_password(ctx: Context):
@@ -108,7 +108,7 @@ async def test_should_not_create_session_with_incorrect_password(ctx: Context):
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data2 == ServiceError.CREDENTIALS_INCORRECT
+    assert data2 is ServiceError.CREDENTIALS_INCORRECT
 
 
 async def test_should_fetch_one_session(ctx: Context):
@@ -160,7 +160,7 @@ async def test_should_fetch_one_session(ctx: Context):
 
 async def test_should_not_fetch_one_nonexistent_session(ctx: Context):
     data = await sessions.fetch_one(ctx, session_id=uuid.uuid4())
-    assert data == ServiceError.SESSIONS_NOT_FOUND
+    assert data is ServiceError.SESSIONS_NOT_FOUND
 
 
 async def test_should_not_fetch_one_deleted_session(ctx: Context):
@@ -210,7 +210,7 @@ async def test_should_not_fetch_one_deleted_session(ctx: Context):
     assert data3["updated_at"] == data2["updated_at"]
 
     data4 = await sessions.fetch_one(ctx, session_id=data2["session_id"])
-    assert data4 == ServiceError.SESSIONS_NOT_FOUND
+    assert data4 is ServiceError.SESSIONS_NOT_FOUND
 
 
 async def test_should_fetch_all_sessions(ctx: Context):
@@ -382,7 +382,7 @@ async def test_should_not_partial_update_nonexistent_session(ctx: Context):
         session_id=uuid.uuid4(),
         expires_at=expires_at,
     )
-    assert data == ServiceError.SESSIONS_NOT_FOUND
+    assert data is ServiceError.SESSIONS_NOT_FOUND
 
 
 async def test_should_not_partial_update_deleted_session(ctx: Context):
@@ -438,7 +438,7 @@ async def test_should_not_partial_update_deleted_session(ctx: Context):
         session_id=data2["session_id"],
         expires_at=expires_at,
     )
-    assert data4 == ServiceError.SESSIONS_NOT_FOUND
+    assert data4 is ServiceError.SESSIONS_NOT_FOUND
 
 
 async def test_should_delete_session(ctx: Context):
@@ -490,7 +490,7 @@ async def test_should_delete_session(ctx: Context):
 
 async def test_should_not_delete_nonexistent_session(ctx: Context):
     data = await sessions.delete(ctx, session_id=uuid.uuid4())
-    assert data == ServiceError.SESSIONS_NOT_FOUND
+    assert data is ServiceError.SESSIONS_NOT_FOUND
 
 
 async def test_should_not_delete_deleted_session(ctx: Context):
@@ -540,4 +540,4 @@ async def test_should_not_delete_deleted_session(ctx: Context):
     assert data3["updated_at"] == data2["updated_at"]  # TODO: kinda wrong?
 
     data4 = await sessions.delete(ctx, session_id=data2["session_id"])
-    assert data4 == ServiceError.SESSIONS_NOT_FOUND
+    assert data4 is ServiceError.SESSIONS_NOT_FOUND
