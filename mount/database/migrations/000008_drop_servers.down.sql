@@ -1,0 +1,9 @@
+CREATE TABLE servers (
+    server_id SERIAL NOT NULL PRIMARY KEY,
+    server_name TEXT NOT NULL UNIQUE,
+    hourly_request_limit INTEGER NOT NULL,
+    secret_key TEXT NOT NULL,
+    status TEXT NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
