@@ -1,3 +1,4 @@
+from typing import Annotated
 from uuid import UUID
 
 from app.api.rest.context import RequestContext
@@ -15,8 +16,8 @@ router = APIRouter(tags=["Login Attempts"])
 
 @router.get("/v1/login-attempts/{login_attempt_id}")
 async def fetch_one(
+    ctx: Annotated[RequestContext, Depends()],
     login_attempt_id: UUID,
-    ctx: RequestContext = Depends(),
 ) -> Success[LoginAttempt]:
     data = await login_attempts.fetch_one(ctx, login_attempt_id=login_attempt_id)
     if isinstance(data, ServiceError):
@@ -28,11 +29,11 @@ async def fetch_one(
 
 @router.get("/v1/login-attempts")
 async def fetch_many(
+    ctx: Annotated[RequestContext, Depends()],
     phone_number: str | None = None,
     ip_address: str | None = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=1000),
-    ctx: RequestContext = Depends(),
 ) -> Success[list[LoginAttempt]]:
     data = await login_attempts.fetch_many(
         ctx,

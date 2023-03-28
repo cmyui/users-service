@@ -1,3 +1,4 @@
+from typing import Annotated
 from uuid import UUID
 
 from app.api.rest.context import RequestContext
@@ -22,10 +23,10 @@ router = APIRouter(tags=["Sessions"])
     status_code=status.HTTP_201_CREATED,
 )
 async def create(
+    ctx: Annotated[RequestContext, Depends()],
     args: LoginForm,
     cf_connecting_ip: str = Header("CF-Connecting-IP"),
     user_agent: str = Header("User-Agent"),
-    ctx: RequestContext = Depends(),
 ) -> Success[Session]:
     data = await sessions.create(
         ctx,
@@ -49,8 +50,8 @@ async def create(
 
 @router.get("/v1/sessions/{session_id}")
 async def fetch_one(
+    ctx: Annotated[RequestContext, Depends()],
     session_id: UUID,
-    ctx: RequestContext = Depends(),
 ) -> Success[Session]:
     data = await sessions.fetch_one(ctx, session_id=session_id)
     if isinstance(data, ServiceError):
@@ -62,9 +63,9 @@ async def fetch_one(
 
 @router.get("/v1/sessions")
 async def fetch_many(
+    ctx: Annotated[RequestContext, Depends()],
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=1000),
-    ctx: RequestContext = Depends(),
 ) -> Success[list[Session]]:
     data = await sessions.fetch_many(ctx, page=page, page_size=page_size)
     if isinstance(data, ServiceError):
@@ -83,9 +84,9 @@ async def fetch_many(
 
 @router.patch("/v1/sessions/{session_id}")
 async def partial_update(
+    ctx: Annotated[RequestContext, Depends()],
     session_id: UUID,
     args: SessionUpdate,
-    ctx: RequestContext = Depends(),
 ) -> Success[Session]:
     data = await sessions.partial_update(
         ctx,
@@ -104,8 +105,8 @@ async def partial_update(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete(
+    ctx: Annotated[RequestContext, Depends()],
     session_id: UUID,
-    ctx: RequestContext = Depends(),
 ) -> None:
     data = await sessions.delete(ctx, session_id)
     if isinstance(data, ServiceError):
