@@ -10,6 +10,7 @@ from app.models.sessions import SessionUpdate
 from app.services import sessions
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import Header
 from fastapi import Query
 from fastapi import status
 
@@ -22,12 +23,16 @@ router = APIRouter(tags=["Sessions"])
 )
 async def create(
     args: LoginForm,
+    cf_connecting_ip: str = Header("CF-Connecting-IP"),
+    user_agent: str = Header("User-Agent"),
     ctx: RequestContext = Depends(),
 ) -> Success[Session]:
     data = await sessions.create(
         ctx,
         args.phone_number,
         args.password,
+        cf_connecting_ip,
+        user_agent,
     )
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to create session")
