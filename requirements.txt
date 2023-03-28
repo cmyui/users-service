@@ -1,8 +1,13 @@
+argon2-cffi
 databases[asyncpg]
+email-validator
+Faker
 fastapi[all]
+phonenumbers
 pytest
 pytest-asyncio
 pytest-cov
 python-dotenv
+redis
 structlog
 uvicorn[standard]

@@ -1,31 +1,35 @@
 from typing import Any
+from uuid import UUID
 
 from app.common.context import Context
 from app.models import Status
 
 READ_PARAMS = """\
-    server_id, server_name, hourly_request_limit, status, created_at, updated_at
+    account_id, phone_number, first_name, last_name,
+    status, created_at, updated_at
 """
 
 
 async def create(
     ctx: Context,
-    server_name: str,
-    hourly_request_limit: int,
-    secret_key: str,
+    account_id: UUID,
+    phone_number: str,
+    first_name: str,
+    last_name: str,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO servers (server_name, hourly_request_limit, secret_key,
-                             status)
-             VALUES (:server_name, :hourly_request_limit, :secret_key,
-                     :status)
+        INSERT INTO accounts (account_id, phone_number, first_name,
+                              last_name, status, created_at, updated_at)
+             VALUES (:account_id, :phone_number, :first_name,
+                     :last_name, :status, NOW(), NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
-        "server_name": server_name,
-        "hourly_request_limit": hourly_request_limit,
-        "secret_key": secret_key,
+        "account_id": account_id,
+        "phone_number": phone_number,
+        "first_name": first_name,
+        "last_name": last_name,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
@@ -35,20 +39,20 @@ async def create(
 
 async def fetch_one(
     ctx: Context,
-    server_id: int | None = None,
-    server_name: str | None = None,
+    account_id: UUID | None = None,
+    phone_number: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
         SELECT {READ_PARAMS}
-          FROM servers
-         WHERE server_id = COALESCE(:server_id, server_id)
-           AND server_name = COALESCE(:server_name, server_name)
+          FROM accounts
+         WHERE account_id = COALESCE(:account_id, account_id)
+           AND phone_number = COALESCE(:phone_number, phone_number)
            AND status = :status
     """
     params: dict[str, Any] = {
-        "server_id": server_id,
-        "server_name": server_name,
+        "account_id": account_id,
+        "phone_number": phone_number,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
@@ -63,7 +67,7 @@ async def fetch_many(
 ) -> list[dict[str, Any]]:
     query = f"""\
         SELECT {READ_PARAMS}
-          FROM servers
+          FROM accounts
          WHERE status = :status
     """
     params: dict[str, Any] = {
@@ -82,24 +86,27 @@ async def fetch_many(
 
 async def partial_update(
     ctx: Context,
-    server_id: int,
-    server_name: str | None = None,
-    hourly_request_limit: int | None = None,
+    account_id: UUID,
+    phone_number: str | None = None,
+    first_name: str | None = None,
+    last_name: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
-        UPDATE servers
-           SET server_name = COALESCE(:server_name, server_name),
-               hourly_request_limit = COALESCE(:hourly_request_limit, hourly_request_limit),
+        UPDATE accounts
+           SET phone_number = COALESCE(:phone_number, phone_number),
+               first_name = COALESCE(:first_name, first_name),
+               last_name = COALESCE(:last_name, last_name),
                updated_at = NOW()
-         WHERE server_id = :server_id
+         WHERE account_id = :account_id
            AND status = :status
      RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
-        "server_id": server_id,
-        "server_name": server_name,
-        "hourly_request_limit": hourly_request_limit,
+        "account_id": account_id,
+        "phone_number": phone_number,
+        "first_name": first_name,
+        "last_name": last_name,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
@@ -108,19 +115,19 @@ async def partial_update(
 
 async def delete(
     ctx: Context,
-    server_id: int,
+    account_id: UUID,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
-        UPDATE servers
+        UPDATE accounts
            SET status = :new_status,
                updated_at = NOW()
-         WHERE server_id = :server_id
+         WHERE account_id = :account_id
            AND status = :old_status
      RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
-        "server_id": server_id,
+        "account_id": account_id,
         "new_status": Status.DELETED,
         "old_status": status,
     }

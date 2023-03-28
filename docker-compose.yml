@@ -12,10 +12,15 @@ services:
     ports:
       - 5432:5432
 
+  redis:
+    image: redis:6
+    ports:
+      - 6379:6379
+
   ## application services
 
-  example-service:
-    image: example-service:latest
+  users-service:
+    image: users-service:latest
     ports:
       - 10000:80
     environment:
@@ -39,9 +44,13 @@ services:
       - MIN_DB_POOL_SIZE=${MIN_DB_POOL_SIZE}
       - MAX_DB_POOL_SIZE=${MAX_DB_POOL_SIZE}
       - DB_USE_SSL=${DB_USE_SSL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DB=${REDIS_DB}
       - SERVICE_READINESS_TIMEOUT=${SERVICE_READINESS_TIMEOUT}
     volumes:
       - ./mount:/srv/root
       - ./scripts:/scripts
     depends_on:
       - postgres
+      - redis

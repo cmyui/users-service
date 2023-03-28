@@ -6,6 +6,12 @@ load_dotenv()
 
 # asgi + app
 APP_ENV = os.environ["APP_ENV"]
+if APP_ENV in ("local", "ci"):
+    # TODO: is there a better place for this?
+    import email_validator
+
+    email_validator.TEST_ENVIRONMENT = True
+
 APP_COMPONENT = os.environ["APP_COMPONENT"]
 APP_HOST = os.environ["APP_HOST"]
 APP_PORT = int(os.environ["APP_PORT"])
@@ -29,3 +35,7 @@ WRITE_DB_NAME = os.environ["WRITE_DB_NAME"]
 MIN_DB_POOL_SIZE = int(os.environ["MIN_DB_POOL_SIZE"])
 MAX_DB_POOL_SIZE = int(os.environ["MAX_DB_POOL_SIZE"])
 DB_USE_SSL = os.environ["DB_USE_SSL"].lower() == "true"
+
+REDIS_HOST = os.environ["REDIS_HOST"]
+REDIS_PORT = int(os.environ["REDIS_PORT"])
+REDIS_DB = int(os.environ["REDIS_DB"])

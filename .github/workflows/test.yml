@@ -3,6 +3,10 @@ name: test
 on:
   push
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   APP_ENV: ${{ vars.APP_ENV }}
   APP_COMPONENT: ${{ vars.APP_COMPONENT }}
@@ -24,6 +28,9 @@ env:
   MIN_DB_POOL_SIZE: ${{ vars.MIN_DB_POOL_SIZE }}
   MAX_DB_POOL_SIZE: ${{ vars.MAX_DB_POOL_SIZE }}
   DB_USE_SSL: ${{ vars.DB_USE_SSL }}
+  REDIS_HOST: ${{ vars.REDIS_HOST }}
+  REDIS_PORT: ${{ vars.REDIS_PORT }}
+  REDIS_DB: ${{ vars.REDIS_DB }}
   SERVICE_READINESS_TIMEOUT: ${{ vars.SERVICE_READINESS_TIMEOUT }}
 
 jobs:
@@ -34,13 +41,13 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Build application image
-      run: docker build -t example-service:latest .
+      run: docker build -t users-service:latest .
 
     - name: Run containers
-      run: docker-compose up -d example-service postgres
+      run: docker-compose up -d users-service postgres
 
     - name: Run tests
-      run: docker-compose exec -T example-service /scripts/run-tests.sh
+      run: docker-compose exec -T users-service /scripts/run-tests.sh
 
     - name: Stop containers
       if: always()
