@@ -406,6 +406,28 @@
         ],
         "summary": "Create",
         "operationId": "create_v1_sessions_post",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Cf-Connecting-Ip",
+              "type": "string",
+              "default": "CF-Connecting-IP"
+            },
+            "name": "cf-connecting-ip",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "User-Agent",
+              "type": "string",
+              "default": "User-Agent"
+            },
+            "name": "user-agent",
+            "in": "header"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
