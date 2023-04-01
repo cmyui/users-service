@@ -1,0 +1,12 @@
+app:
+  name: app
+  environment: staging
+  group: app
+  replicaCount: 1
+  container:
+    image: application-backend:latest
+    port: 80
+    config: []
+  service:
+    type: ClusterIP
+    port: 80
