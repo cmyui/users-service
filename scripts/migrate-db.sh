@@ -14,8 +14,10 @@ if [[ "$APP_COMPONENT" == "tests" ]]; then
     FULL_DB_NAME="${WRITE_DB_NAME}_test"
 fi
 
-# TODO: support for DB_USE_SSL flag
-DB_DSN="${WRITE_DB_SCHEME}://${WRITE_DB_USER}:${WRITE_DB_PASS}@${WRITE_DB_HOST}:${WRITE_DB_PORT}/${FULL_DB_NAME}?x-migrations-table=${MIGRATIONS_SCHEMA_TABLE}&sslmode=disable"
+DB_DSN="${WRITE_DB_SCHEME}://${WRITE_DB_USER}:${WRITE_DB_PASS}@${WRITE_DB_HOST}:${WRITE_DB_PORT}/${FULL_DB_NAME}?x-migrations-table=${MIGRATIONS_SCHEMA_TABLE}"
+if [[ $DB_USE_SSL == "true" ]]; then
+    DB_DSN="${DB_DSN}&sslmode=require"
+fi
 
 case "$1" in
     up)
