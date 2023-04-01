@@ -84,6 +84,23 @@ async def fetch_many(
     return recs
 
 
+async def fetch_total_count(
+    ctx: Context,
+    status: Status = Status.ACTIVE,
+) -> int:
+    query = """\
+        SELECT COUNT(*)
+          FROM accounts
+         WHERE status = :status
+    """
+    params: dict[str, Any] = {
+        "status": status,
+    }
+    rec = await ctx.db.fetch_one(query, params)
+    assert rec is not None
+    return rec["count"]
+
+
 async def partial_update(
     ctx: Context,
     account_id: UUID,

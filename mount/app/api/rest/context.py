@@ -15,3 +15,7 @@ class RequestContext(Context):
     @property
     def redis(self) -> aioredis.Redis:
         return self.request.state.redis
+
+
+def create_request_context(request: Request) -> RequestContext:
+    return RequestContext(request)

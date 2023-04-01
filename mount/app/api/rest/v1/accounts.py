@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from app.api.rest.context import create_request_context
 from app.api.rest.context import RequestContext
 from app.common import responses
 from app.common.errors import ServiceError
@@ -22,7 +23,7 @@ router = APIRouter(tags=["Accounts"])
 )
 async def create(
     args: SignupForm,
-    ctx: RequestContext = Depends(),
+    ctx: RequestContext = Depends(create_request_context),
 ) -> Success[Account]:
     data = await accounts.create(
         ctx,
@@ -67,11 +68,15 @@ async def fetch_many(
     if isinstance(data, ServiceError):
         return responses.failure(data, "Failed to get accounts")
 
+    total = await accounts.fetch_total_count(ctx)
+    if isinstance(total, ServiceError):
+        return responses.failure(total, "Failed to get accounts")
+
     resp = [Account.from_mapping(d) for d in data]
     return responses.success(
         resp,
         meta={
-            "total": len(resp),
+            "total": total,
             "page_size": page_size,
             "page": page,
         },

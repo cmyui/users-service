@@ -84,9 +84,13 @@ async def fetch_many(
     ctx: Context,
     page: int | None = None,
     page_size: int | None = None,
-) -> list[dict[str, Any]]:
+) -> list[dict[str, Any]] | ServiceError:
     accounts = await accounts_repo.fetch_many(ctx, page, page_size)
     return accounts
+
+
+async def fetch_total_count(ctx: Context) -> int | ServiceError:
+    return await accounts_repo.fetch_total_count(ctx)
 
 
 async def partial_update(
