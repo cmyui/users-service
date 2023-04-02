@@ -1,0 +1,68 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_ENV: ${{ vars.APP_ENV }}
+  APP_COMPONENT: ${{ vars.APP_COMPONENT }}
+  APP_HOST: ${{ vars.APP_HOST }}
+  APP_PORT: ${{ vars.APP_PORT }}
+  LOG_LEVEL: ${{ vars.LOG_LEVEL }}
+  READ_DB_SCHEME: ${{ vars.READ_DB_SCHEME }}
+  READ_DB_USER: ${{ vars.READ_DB_USER }}
+  READ_DB_PASS: ${{ vars.READ_DB_PASS }}
+  READ_DB_HOST: ${{ vars.READ_DB_HOST }}
+  READ_DB_PORT: ${{ vars.READ_DB_PORT }}
+  READ_DB_NAME: ${{ vars.READ_DB_NAME }}
+  WRITE_DB_SCHEME: ${{ vars.WRITE_DB_SCHEME }}
+  WRITE_DB_USER: ${{ vars.WRITE_DB_USER }}
+  WRITE_DB_PASS: ${{ vars.WRITE_DB_PASS }}
+  WRITE_DB_HOST: ${{ vars.WRITE_DB_HOST }}
+  WRITE_DB_PORT: ${{ vars.WRITE_DB_PORT }}
+  WRITE_DB_NAME: ${{ vars.WRITE_DB_NAME }}
+  MIN_DB_POOL_SIZE: ${{ vars.MIN_DB_POOL_SIZE }}
+  MAX_DB_POOL_SIZE: ${{ vars.MAX_DB_POOL_SIZE }}
+  DB_USE_SSL: ${{ vars.DB_USE_SSL }}
+  REDIS_HOST: ${{ vars.REDIS_HOST }}
+  REDIS_PORT: ${{ vars.REDIS_PORT }}
+  REDIS_DB: ${{ vars.REDIS_DB }}
+
+jobs:
+  staging-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install digitalocean command line interface
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Log-in to digitalocean container registry
+      run: doctl registry --login --expiry-seconds 600
+
+    - name: Build container image
+      run: docker build -t registry.digitalocean.com/akatsuki/users-service:$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Log in to digitalocean container registry
+      run: doctl registry login --expiry-seconds 1200
+
+    - name: Push image to digitalocean container registry
+      run: docker push registry.digitalocean.com/akatsuki/users-service:$(echo $GITHUB_SHA | head -c7)
+
+    - name: Save digitalocean kubeconfig
+      run: doctl k8s cluster kubeconfig save --expiry-seconds 600 akatsuki-staging
+
+    - name: Show diff
+      run: helm diff upgrade -f users-service.yaml users-service ./chart/
+
+    - name: Deploy service
+      run: helm upgrade -f users-service.yaml users-service ./chart/
