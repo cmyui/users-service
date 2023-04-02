@@ -73,8 +73,14 @@ jobs:
     - name: Install helm-diff
       run: helm plugin install https://github.com/databus23/helm-diff
 
+    - name: Checkout common-helm-charts repo
+      uses: actions/checkout@v3
+      with:
+        repository: osuAkatsuki/common-helm-charts
+        path: common-helm-charts
+
     - name: Show diff
-      run: helm diff upgrade -f users-service.yaml users-service ./chart/
+      run: helm diff --allow-unreleased upgrade -f chart/values.yaml users-service common-helm-charts/microservice-base
 
     - name: Deploy service
-      run: helm upgrade -f users-service.yaml users-service ./chart/
+      run: helm upgrade -f chart/values.yaml users-service common-helm-charts/microservice-base
