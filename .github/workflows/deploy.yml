@@ -40,7 +40,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Check out latest commit
+      uses: actions/checkout@v3
 
     - name: Install digitalocean command line interface
       uses: digitalocean/action-doctl@v2
@@ -62,11 +63,15 @@ jobs:
     - name: Save digitalocean kubeconfig
       run: doctl k8s cluster kubeconfig save --expiry-seconds 600 akatsuki-staging
 
-    - uses: azure/setup-helm@v3
+    - name: Install helm
+      uses: azure/setup-helm@v3
       with:
         version: 'latest'
         token: ${{ secrets.GITHUB_TOKEN }}
       id: install
+
+    - name: Install helm-diff
+      run: helm plugin install https://github.com/databus23/helm-diff
 
     - name: Show diff
       run: helm diff upgrade -f users-service.yaml users-service ./chart/
