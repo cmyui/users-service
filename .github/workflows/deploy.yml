@@ -77,7 +77,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: osuAkatsuki/common-helm-charts
-        path: ./common-helm-charts
 
     - name: Show diff
       run: helm diff --allow-unreleased upgrade -f chart/values.yaml users-service common-helm-charts/microservice-base
