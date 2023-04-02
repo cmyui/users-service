@@ -48,7 +48,7 @@ jobs:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
     - name: Log-in to digitalocean container registry
-      run: doctl registry --login --expiry-seconds 600
+      run: doctl registry login --expiry-seconds 600
 
     - name: Build container image
       run: docker build -t registry.digitalocean.com/akatsuki/users-service:$(echo $GITHUB_SHA | head -c7) .
@@ -61,6 +61,12 @@ jobs:
 
     - name: Save digitalocean kubeconfig
       run: doctl k8s cluster kubeconfig save --expiry-seconds 600 akatsuki-staging
+
+    - uses: azure/setup-helm@v3
+      with:
+        version: 'latest'
+        token: ${{ secrets.GITHUB_TOKEN }}
+      id: install
 
     - name: Show diff
       run: helm diff upgrade -f users-service.yaml users-service ./chart/
