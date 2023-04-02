@@ -3,7 +3,9 @@ app:
   environment: staging
   group: backend
   container:
-    image: registry.digitalocean.com/akatsuki/users-service:latest
+    image:
+      repository: registry.digitalocean.com/akatsuki/users-service
+      tag: latest
     port: 80
     env:
       - APP_ENV
