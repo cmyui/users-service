@@ -1,6 +1,7 @@
 #!/usr/bin/make
 
 build: # build all containers
+	sudo chmod -R 755 pgdata
 	docker build -t users-service:latest .
 
 run-bg: # run all containers in the background
