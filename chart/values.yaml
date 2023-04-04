@@ -6,6 +6,8 @@ app:
     image:
       repository: registry.digitalocean.com/akatsuki/users-service
       tag: latest
+    imagePullSecrets:
+      - name: akatsuki
     port: 80
     env:
       - APP_ENV
