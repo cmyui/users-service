@@ -40,7 +40,7 @@ down-migrations: # apply down migrations from current state
 	docker-compose exec users-service /scripts/migrate-db.sh down
 
 push:
-	docker tag registry.digitalocean.com/akatsuki/users-service:latest users-service:latest
+	docker tag users-service:latest registry.digitalocean.com/akatsuki/users-service:latest
 	docker push registry.digitalocean.com/akatsuki/users-service:latest
 
 install:
