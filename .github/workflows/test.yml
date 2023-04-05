@@ -31,6 +31,7 @@ env:
   REDIS_HOST: ${{ vars.REDIS_HOST }}
   REDIS_PORT: ${{ vars.REDIS_PORT }}
   REDIS_DB: ${{ vars.REDIS_DB }}
+  INITIALLY_AVAILABLE_DB : ${{ vars.INITIALLY_AVAILABLE_DB }}
 
 jobs:
   test:
