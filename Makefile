@@ -53,4 +53,4 @@ diff-upgrade:
 	helm diff upgrade --allow-unreleased --values chart/values.yaml users-service-staging ../akatsuki/common-helm-charts/microservice-base/
 
 upgrade:
-	helm upgrade --values chart/values.yaml users-service-staging ../akatsuki/common-helm-charts/microservice-base/
+	helm upgrade --atomic --values chart/values.yaml users-service-staging ../akatsuki/common-helm-charts/microservice-base/
