@@ -9,31 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  APP_ENV: ${{ vars.APP_ENV }}
-  APP_COMPONENT: ${{ vars.APP_COMPONENT }}
-  APP_HOST: ${{ vars.APP_HOST }}
-  APP_PORT: ${{ vars.APP_PORT }}
-  LOG_LEVEL: ${{ vars.LOG_LEVEL }}
-  READ_DB_SCHEME: ${{ vars.READ_DB_SCHEME }}
-  READ_DB_USER: ${{ vars.READ_DB_USER }}
-  READ_DB_PASS: ${{ vars.READ_DB_PASS }}
-  READ_DB_HOST: ${{ vars.READ_DB_HOST }}
-  READ_DB_PORT: ${{ vars.READ_DB_PORT }}
-  READ_DB_NAME: ${{ vars.READ_DB_NAME }}
-  WRITE_DB_SCHEME: ${{ vars.WRITE_DB_SCHEME }}
-  WRITE_DB_USER: ${{ vars.WRITE_DB_USER }}
-  WRITE_DB_PASS: ${{ vars.WRITE_DB_PASS }}
-  WRITE_DB_HOST: ${{ vars.WRITE_DB_HOST }}
-  WRITE_DB_PORT: ${{ vars.WRITE_DB_PORT }}
-  WRITE_DB_NAME: ${{ vars.WRITE_DB_NAME }}
-  MIN_DB_POOL_SIZE: ${{ vars.MIN_DB_POOL_SIZE }}
-  MAX_DB_POOL_SIZE: ${{ vars.MAX_DB_POOL_SIZE }}
-  DB_USE_SSL: ${{ vars.DB_USE_SSL }}
-  REDIS_HOST: ${{ vars.REDIS_HOST }}
-  REDIS_PORT: ${{ vars.REDIS_PORT }}
-  REDIS_DB: ${{ vars.REDIS_DB }}
-
 jobs:
   staging-deployment:
     runs-on: ubuntu-latest
