@@ -1,3 +1,4 @@
+import ssl
 from types import TracebackType
 from typing import Any
 from typing import Type
@@ -11,7 +12,7 @@ def _create_pool(
     dsn: str,
     min_pool_size: int,
     max_pool_size: int,
-    ssl: bool,
+    ssl: bool | ssl.SSLContext,
 ) -> Database:
     return Database(url=dsn, min_size=min_pool_size, max_size=max_pool_size, ssl=ssl)
 
@@ -36,7 +37,7 @@ class ServiceDatabase:
         write_dsn: str,
         min_pool_size: int,
         max_pool_size: int,
-        ssl: bool,
+        ssl: bool | ssl.SSLContext,
     ) -> None:
         self.read_pool = _create_pool(read_dsn, min_pool_size, max_pool_size, ssl)
         self.write_pool = _create_pool(write_dsn, min_pool_size, max_pool_size, ssl)

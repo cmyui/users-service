@@ -32,6 +32,8 @@ WRITE_DB_HOST = os.environ["WRITE_DB_HOST"]
 WRITE_DB_PORT = int(os.environ["WRITE_DB_PORT"])
 WRITE_DB_NAME = os.environ["WRITE_DB_NAME"]
 
+# TODO: move these to be per-database settings
+DB_CA_CERTIFICATE = os.environ["DB_CA_CERTIFICATE"]
 MIN_DB_POOL_SIZE = int(os.environ["MIN_DB_POOL_SIZE"])
 MAX_DB_POOL_SIZE = int(os.environ["MAX_DB_POOL_SIZE"])
 DB_USE_SSL = os.environ["DB_USE_SSL"].lower() == "true"
