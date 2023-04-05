@@ -53,7 +53,7 @@ jobs:
         path: common-helm-charts
 
     - name: Show diff
-      run: helm diff --allow-unreleased upgrade --values chart/values.yaml users-service common-helm-charts/microservice-base
+      run: helm diff upgrade --allow-unreleased --values chart/values.yaml users-service-staging common-helm-charts/microservice-base/
 
     - name: Deploy service
-      run: helm upgrade --install --values chart/values.yaml users-service common-helm-charts/microservice-base
+      run: helm upgrade --atomic --values chart/values.yaml users-service-staging common-helm-charts/microservice-base/
