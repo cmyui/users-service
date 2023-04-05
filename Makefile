@@ -2,7 +2,7 @@
 
 build: # build all containers
 	sudo chmod -R 755 pgdata
-	docker build -t users-service:latest registry.digitalocean.com/akatsuki/users-service:latest .
+	docker build -t users-service:latest -t registry.digitalocean.com/akatsuki/users-service:latest .
 
 run-bg: # run all containers in the background
 	docker-compose up -d \
