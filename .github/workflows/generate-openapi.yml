@@ -14,6 +14,7 @@ concurrency:
 env:
   APP_ENV: ${{ vars.APP_ENV }}
   APP_COMPONENT: ${{ vars.APP_COMPONENT }}
+  APP_ROOT_PATH: ${{ vars.APP_ROOT_PATH }}
   APP_HOST: ${{ vars.APP_HOST }}
   APP_PORT: ${{ vars.APP_PORT }}
   LOG_LEVEL: ${{ vars.LOG_LEVEL }}

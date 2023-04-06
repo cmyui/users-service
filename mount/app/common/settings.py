@@ -13,6 +13,7 @@ if APP_ENV in ("local", "ci"):
     email_validator.TEST_ENVIRONMENT = True
 
 APP_COMPONENT = os.environ["APP_COMPONENT"]
+APP_ROOT_PATH = os.environ["APP_ROOT_PATH"]
 APP_HOST = os.environ["APP_HOST"]
 APP_PORT = int(os.environ["APP_PORT"])
 LOG_LEVEL = int(os.environ["LOG_LEVEL"])
