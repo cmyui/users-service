@@ -43,13 +43,29 @@ push:
 	docker push registry.digitalocean.com/akatsuki/users-service:latest
 
 install:
-	helm install --values chart/values.yaml users-service-staging ../akatsuki/common-helm-charts/microservice-base/
+	helm install \
+		--wait --timeout 120s \
+		--atomic \
+		--values chart/values.yaml \
+		users-service-staging \
+		../akatsuki/common-helm-charts/microservice-base/
 
 uninstall:
-	helm uninstall users-service-staging
-
-diff-upgrade:
-	helm diff upgrade --allow-unreleased --values chart/values.yaml users-service-staging ../akatsuki/common-helm-charts/microservice-base/
+	helm uninstall \
+		--wait --timeout 120s \
+		users-service-staging
 
 upgrade:
-	helm upgrade --atomic --values chart/values.yaml users-service-staging ../akatsuki/common-helm-charts/microservice-base/
+	helm upgrade \
+		--wait --timeout 120s \
+		--atomic \
+		--values chart/values.yaml \
+		users-service-staging \
+		../akatsuki/common-helm-charts/microservice-base/
+
+diff:
+	helm diff upgrade \
+		--allow-unreleased \
+		--values chart/values.yaml \
+		users-service-staging \
+		../akatsuki/common-helm-charts/microservice-base/
