@@ -2,4 +2,4 @@
 __pycache__/
 mount/.coverage
 pgdata/
-.env
+.env*

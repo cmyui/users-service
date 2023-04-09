@@ -11,7 +11,7 @@ execDBStatement() {
     --host=$WRITE_DB_HOST \
     --port=$WRITE_DB_PORT \
     --username=$WRITE_DB_USER \
-    --dbname=postgres \
+    --dbname=$INITIALLY_AVAILABLE_DB \
     $SSL_ARGS
 }
 

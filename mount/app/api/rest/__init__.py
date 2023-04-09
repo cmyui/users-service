@@ -1,3 +1,5 @@
+import base64
+import ssl
 import time
 
 import redis.asyncio as aioredis
@@ -31,7 +33,12 @@ def init_db(api: FastAPI) -> None:
             ),
             min_pool_size=settings.MIN_DB_POOL_SIZE,
             max_pool_size=settings.MAX_DB_POOL_SIZE,
-            ssl=settings.DB_USE_SSL,
+            ssl=ssl.create_default_context(
+                purpose=ssl.Purpose.SERVER_AUTH,
+                cadata=base64.b64decode(settings.DB_CA_CERTIFICATE).decode(),
+            )
+            if settings.DB_USE_SSL
+            else False,
         )
         await service_database.connect()
         api.state.db = service_database

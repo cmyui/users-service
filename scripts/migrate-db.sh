@@ -17,6 +17,8 @@ fi
 DB_DSN="${WRITE_DB_SCHEME}://${WRITE_DB_USER}:${WRITE_DB_PASS}@${WRITE_DB_HOST}:${WRITE_DB_PORT}/${FULL_DB_NAME}?x-migrations-table=${MIGRATIONS_SCHEMA_TABLE}"
 if [[ $DB_USE_SSL == "true" ]]; then
     DB_DSN="${DB_DSN}&sslmode=require"
+else
+    DB_DSN="${DB_DSN}&sslmode=disable"
 fi
 
 case "$1" in

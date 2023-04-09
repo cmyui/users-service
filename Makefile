@@ -1,7 +1,8 @@
 #!/usr/bin/make
 
 build: # build all containers
-	docker build -t users-service:latest .
+	sudo chmod -R 755 pgdata
+	docker build -t users-service:latest -t registry.digitalocean.com/akatsuki/users-service:latest .
 
 run-bg: # run all containers in the background
 	docker-compose up -d \
@@ -37,3 +38,34 @@ up-migrations: # apply up migrations from current state
 
 down-migrations: # apply down migrations from current state
 	docker-compose exec users-service /scripts/migrate-db.sh down
+
+push:
+	docker push registry.digitalocean.com/akatsuki/users-service:latest
+
+install:
+	helm install \
+		--wait --timeout 120s \
+		--atomic \
+		--values chart/values.yaml \
+		users-service-staging \
+		../akatsuki/common-helm-charts/microservice-base/
+
+uninstall:
+	helm uninstall \
+		--wait --timeout 120s \
+		users-service-staging
+
+upgrade:
+	helm upgrade \
+		--wait --timeout 120s \
+		--atomic \
+		--values chart/values.yaml \
+		users-service-staging \
+		../akatsuki/common-helm-charts/microservice-base/
+
+diff:
+	helm diff upgrade \
+		--allow-unreleased \
+		--values chart/values.yaml \
+		users-service-staging \
+		../akatsuki/common-helm-charts/microservice-base/
