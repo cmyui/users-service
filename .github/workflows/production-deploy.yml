@@ -1,7 +1,6 @@
 name: production-deploy
 
-on:
-  deployment
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
