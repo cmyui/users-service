@@ -44,8 +44,8 @@ push:
 
 install:
 	helm install \
-		--wait --timeout 120s \
 		--atomic \
+		--wait --timeout 120s \
 		--values chart/values.yaml \
 		users-service-staging \
 		../akatsuki/common-helm-charts/microservice-base/
@@ -57,8 +57,8 @@ uninstall:
 
 upgrade:
 	helm upgrade \
-		--wait --timeout 120s \
 		--atomic \
+		--wait --timeout 120s \
 		--values chart/values.yaml \
 		users-service-staging \
 		../akatsuki/common-helm-charts/microservice-base/
