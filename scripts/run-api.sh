@@ -16,5 +16,6 @@ exec uvicorn \
     --host $APP_HOST \
     --port $APP_PORT \
     --no-access-log \
+    --root-path $APP_ROOT_PATH \
     $EXTRA_PARAMS \
     app.api_boot:api

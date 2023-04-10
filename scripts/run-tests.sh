@@ -2,12 +2,17 @@
 set -eo pipefail
 
 execDBStatement() {
-  # TODO: support for DB_USE_SSL flag
+  if [[ $DB_USE_SSL == "true" ]]; then
+    SSL_ARGS="--set=sslmode=require"
+  else
+    SSL_ARGS=""
+  fi
   echo "$1" | PGPASSWORD=$WRITE_DB_PASS psql \
     --host=$WRITE_DB_HOST \
     --port=$WRITE_DB_PORT \
     --username=$WRITE_DB_USER \
-    --dbname=postgres
+    --dbname=$INITIALLY_AVAILABLE_DB \
+    $SSL_ARGS
 }
 
 # await connected service availability
