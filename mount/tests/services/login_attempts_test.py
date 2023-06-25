@@ -27,7 +27,7 @@ async def test_should_create_login_attempt(ctx: Context):
 async def test_should_not_create_login_attempt_with_invalid_username(ctx: Context):
     data = await login_attempts.create(
         ctx,
-        username="15555555555",
+        username="12",
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )

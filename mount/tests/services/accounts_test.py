@@ -30,7 +30,7 @@ async def test_should_create_account(ctx: Context):
 async def test_should_not_create_account_with_invalid_username(ctx: Context):
     data = await accounts.create(
         ctx,
-        username="15555555555",
+        username="12",
         password=sample_data.fake_password(),
         first_name=sample_data.fake_first_name(),
         last_name=sample_data.fake_last_name(),

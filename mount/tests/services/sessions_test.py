@@ -52,7 +52,7 @@ async def test_should_create_session(ctx: Context):
 async def test_should_not_create_session_with_invalid_username(ctx: Context):
     data = await sessions.create(
         ctx,
-        username="15555555555",
+        username="12",
         password=sample_data.fake_password(),
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
