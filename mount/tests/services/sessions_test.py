@@ -11,20 +11,20 @@ from testing import sample_data
 
 
 async def test_should_create_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -34,7 +34,7 @@ async def test_should_create_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,
@@ -49,21 +49,21 @@ async def test_should_create_session(ctx: Context):
     }
 
 
-async def test_should_not_create_session_with_invalid_phone_number(ctx: Context):
+async def test_should_not_create_session_with_invalid_username(ctx: Context):
     data = await sessions.create(
         ctx,
-        phone_number="15555555555",
+        username="12",
         password=sample_data.fake_password(),
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data is ServiceError.SESSIONS_PHONE_NUMBER_INVALID
+    assert data is ServiceError.SESSIONS_USERNAME_INVALID
 
 
 async def test_should_not_create_session_with_invalid_password(ctx: Context):
     data = await sessions.create(
         ctx,
-        phone_number=sample_data.fake_phone_number(),
+        username=sample_data.fake_username(),
         password="abc",
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
@@ -71,10 +71,10 @@ async def test_should_not_create_session_with_invalid_password(ctx: Context):
     assert data is ServiceError.SESSIONS_PASSWORD_INVALID
 
 
-async def test_should_not_create_session_with_nonexistent_phone_number(ctx: Context):
+async def test_should_not_create_session_with_nonexistent_username(ctx: Context):
     data = await sessions.create(
         ctx,
-        phone_number=sample_data.fake_phone_number(),
+        username=sample_data.fake_username(),
         password=sample_data.fake_password(),
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
@@ -83,27 +83,27 @@ async def test_should_not_create_session_with_nonexistent_phone_number(ctx: Cont
 
 
 async def test_should_not_create_session_with_incorrect_password(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=sample_data.fake_password(),
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
@@ -112,20 +112,20 @@ async def test_should_not_create_session_with_incorrect_password(ctx: Context):
 
 
 async def test_should_fetch_one_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -135,7 +135,7 @@ async def test_should_fetch_one_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,
@@ -164,20 +164,20 @@ async def test_should_not_fetch_one_nonexistent_session(ctx: Context):
 
 
 async def test_should_not_fetch_one_deleted_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -187,7 +187,7 @@ async def test_should_not_fetch_one_deleted_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,
@@ -216,20 +216,20 @@ async def test_should_not_fetch_one_deleted_session(ctx: Context):
 async def test_should_fetch_all_sessions(ctx: Context):
     expected = {}
     for _ in range(3):
-        phone_number = sample_data.fake_phone_number()
+        username = sample_data.fake_username()
         password = sample_data.fake_password()
         first_name = sample_data.fake_first_name()
         last_name = sample_data.fake_last_name()
 
         data = await accounts.create(
             ctx,
-            phone_number=phone_number,
+            username=username,
             password=password,
             first_name=first_name,
             last_name=last_name,
         )
         assert not isinstance(data, ServiceError)
-        assert data["phone_number"] == formatters.phone_number(phone_number)
+        assert data["username"] == username
         assert "password" not in data
         assert data["first_name"] == first_name
         assert data["last_name"] == last_name
@@ -239,7 +239,7 @@ async def test_should_fetch_all_sessions(ctx: Context):
 
         data2 = await sessions.create(
             ctx,
-            phone_number=phone_number,
+            username=username,
             password=password,
             ip_address=ip_address,
             user_agent=user_agent,
@@ -272,20 +272,20 @@ async def test_should_fetch_all_sessions(ctx: Context):
 async def test_should_fetch_one_page_of_sessions(ctx: Context):
     expected = []
     for _ in range(3):
-        phone_number = sample_data.fake_phone_number()
+        username = sample_data.fake_username()
         password = sample_data.fake_password()
         first_name = sample_data.fake_first_name()
         last_name = sample_data.fake_last_name()
 
         data = await accounts.create(
             ctx,
-            phone_number=phone_number,
+            username=username,
             password=password,
             first_name=first_name,
             last_name=last_name,
         )
         assert not isinstance(data, ServiceError)
-        assert data["phone_number"] == formatters.phone_number(phone_number)
+        assert data["username"] == username
         assert "password" not in data
         assert data["first_name"] == first_name
         assert data["last_name"] == last_name
@@ -295,7 +295,7 @@ async def test_should_fetch_one_page_of_sessions(ctx: Context):
 
         data2 = await sessions.create(
             ctx,
-            phone_number=phone_number,
+            username=username,
             password=password,
             ip_address=ip_address,
             user_agent=user_agent,
@@ -322,20 +322,20 @@ async def test_should_fetch_one_page_of_sessions(ctx: Context):
 
 
 async def test_should_partial_update_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -345,7 +345,7 @@ async def test_should_partial_update_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,
@@ -386,20 +386,20 @@ async def test_should_not_partial_update_nonexistent_session(ctx: Context):
 
 
 async def test_should_not_partial_update_deleted_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -409,7 +409,7 @@ async def test_should_not_partial_update_deleted_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,
@@ -442,20 +442,20 @@ async def test_should_not_partial_update_deleted_session(ctx: Context):
 
 
 async def test_should_delete_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -465,7 +465,7 @@ async def test_should_delete_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,
@@ -494,20 +494,20 @@ async def test_should_not_delete_nonexistent_session(ctx: Context):
 
 
 async def test_should_not_delete_deleted_session(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     password = sample_data.fake_password()
     first_name = sample_data.fake_first_name()
     last_name = sample_data.fake_last_name()
 
     data = await accounts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         first_name=first_name,
         last_name=last_name,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert "password" not in data
     assert data["first_name"] == first_name
     assert data["last_name"] == last_name
@@ -517,7 +517,7 @@ async def test_should_not_delete_deleted_session(ctx: Context):
 
     data2 = await sessions.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         password=password,
         ip_address=ip_address,
         user_agent=user_agent,

@@ -29,7 +29,7 @@ async def create(
 ) -> Success[Session]:
     data = await sessions.create(
         ctx,
-        args.phone_number,
+        args.username,
         args.password,
         cf_connecting_ip,
         user_agent,

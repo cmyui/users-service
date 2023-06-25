@@ -54,7 +54,6 @@ async def db() -> AsyncIterator[ServiceDatabase]:
         # TODO: is there a more automatic solution?
         await db.execute("TRUNCATE accounts")
         await db.execute("TRUNCATE login_attempts")
-        await db.execute("TRUNCATE credentials")
 
 
 @pytest.fixture(scope="function")

@@ -1,10 +1,15 @@
 import random
-
+import string
 from faker import Faker
 from faker.providers import internet
 
 fake = Faker()
 fake.add_provider(internet)
+
+
+def fake_username() -> str:
+    string_length = random.randint(4, 16)
+    return "".join(random.choices(string.ascii_lowercase, k=string_length))
 
 
 def fake_phone_number() -> str:

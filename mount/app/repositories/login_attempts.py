@@ -4,27 +4,27 @@ from uuid import UUID
 from app.common.context import Context
 
 READ_PARAMS = """\
-    login_attempt_id, phone_number, ip_address, user_agent, created_at
+    login_attempt_id, username, ip_address, user_agent, created_at
 """
 
 
 async def create(
     ctx: Context,
     login_attempt_id: UUID,
-    phone_number: str,
+    username: str,
     ip_address: str,
     user_agent: str,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO login_attempts (login_attempt_id, phone_number, ip_address,
+        INSERT INTO login_attempts (login_attempt_id, username, ip_address,
                                     user_agent)
-             VALUES (:login_attempt_id, :phone_number, :ip_address,
+             VALUES (:login_attempt_id, :username, :ip_address,
                      :user_agent)
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "login_attempt_id": login_attempt_id,
-        "phone_number": phone_number,
+        "username": username,
         "ip_address": ip_address,
         "user_agent": user_agent,
     }
@@ -57,7 +57,7 @@ async def fetch_one(
 
 async def fetch_many(
     ctx: Context,
-    phone_number: str | None = None,
+    username: str | None = None,
     ip_address: str | None = None,
     page: int | None = None,
     page_size: int | None = None,
@@ -65,11 +65,11 @@ async def fetch_many(
     query = f"""\
         SELECT {READ_PARAMS}
           FROM login_attempts
-         WHERE phone_number = COALESCE(:phone_number, phone_number)
+         WHERE username = COALESCE(:username, username)
            AND ip_address = COALESCE(:ip_address, ip_address)
     """
     params: dict[str, Any] = {
-        "phone_number": phone_number,
+        "username": username,
         "ip_address": ip_address,
     }
 

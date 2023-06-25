@@ -8,14 +8,14 @@ from app.common import security
 from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
-from app.repositories import credentials as credentials_repo
 from app.repositories import login_attempts as login_attempts_repo
 from app.repositories import sessions as sessions_repo
+from app.repositories import accounts as accounts_repo
 
 
 async def create(
     ctx: Context,
-    phone_number: str,
+    username: str,
     password: str,
     ip_address: str,
     user_agent: str,
@@ -24,25 +24,24 @@ async def create(
     await login_attempts_repo.create(
         ctx,
         login_attempt_id,
-        phone_number,
+        username,
         ip_address,
         user_agent,
     )
 
-    if not validators.validate_phone_number(phone_number):
-        return ServiceError.SESSIONS_PHONE_NUMBER_INVALID
-
-    phone_number = formatters.phone_number(phone_number)
+    if not validators.validate_username(username):
+        return ServiceError.SESSIONS_USERNAME_INVALID
 
     if not validators.validate_password(password):
         return ServiceError.SESSIONS_PASSWORD_INVALID
 
-    credentials = await credentials_repo.fetch_one(ctx, identifier=phone_number)
-    if credentials is None:
-        return ServiceError.CREDENTIALS_NOT_FOUND
+    account = await accounts_repo.fetch_one(ctx, username=username)
+
+    if account is None:
+        return ServiceError.CREDENTIALS_INCORRECT
 
     if not security.verify_password(
-        hashed_password=credentials["secret"],
+        hashed_password=account["hashed_password"],
         password=password,
     ):
         return ServiceError.CREDENTIALS_INCORRECT
@@ -52,7 +51,7 @@ async def create(
     session = await sessions_repo.create(
         ctx,
         session_id,
-        credentials["account_id"],
+        account["account_id"],
     )
 
     return session
