@@ -109,6 +109,7 @@ async def partial_update(
     params: dict[str, Any] = {
         "account_id": account_id,
         "username": username,
+        "hashed_password": hashed_password,
         "first_name": first_name,
         "last_name": last_name,
         "status": status,
