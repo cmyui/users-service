@@ -1,7 +1,7 @@
 #!/usr/bin/make
 
 build: # build all containers
-	sudo chmod -R 755 pgdata
+	if [ -d "pgdata" ]; then sudo chmod -R 755 pgdata; fi
 	docker build -t users-service:latest -t registry.digitalocean.com/akatsuki/users-service:latest .
 
 run-bg: # run all containers in the background
