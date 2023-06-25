@@ -7,7 +7,7 @@ from app.models import BaseModel
 
 
 class LoginForm(BaseModel):
-    identifier: str
+    username: str
     password: str
 
 

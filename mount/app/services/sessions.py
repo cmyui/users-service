@@ -8,9 +8,9 @@ from app.common import security
 from app.common import validators
 from app.common.context import Context
 from app.common.errors import ServiceError
-from app.repositories import credentials as credentials_repo
 from app.repositories import login_attempts as login_attempts_repo
 from app.repositories import sessions as sessions_repo
+from app.repositories import accounts as accounts_repo
 
 
 async def create(
@@ -35,12 +35,13 @@ async def create(
     if not validators.validate_password(password):
         return ServiceError.SESSIONS_PASSWORD_INVALID
 
-    credentials = await credentials_repo.fetch_one(ctx, identifier=username)
-    if credentials is None:
-        return ServiceError.CREDENTIALS_NOT_FOUND
+    account = await accounts_repo.fetch_one(ctx, username=username)
+
+    if account is None:
+        return ServiceError.CREDENTIALS_INCORRECT
 
     if not security.verify_password(
-        hashed_password=credentials["secret"],
+        hashed_password=account["hashed_password"],
         password=password,
     ):
         return ServiceError.CREDENTIALS_INCORRECT
@@ -50,7 +51,7 @@ async def create(
     session = await sessions_repo.create(
         ctx,
         session_id,
-        credentials["account_id"],
+        account["account_id"],
     )
 
     return session

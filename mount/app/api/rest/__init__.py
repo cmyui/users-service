@@ -9,6 +9,8 @@ from app.common import settings
 from fastapi import FastAPI
 from fastapi import Request
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 def init_db(api: FastAPI) -> None:
     @api.on_event("startup")
@@ -95,6 +97,19 @@ def init_middlewares(api: FastAPI) -> None:
         process_time = (time.perf_counter_ns() - start_time) / 1e6
         response.headers["X-Process-Time"] = str(process_time)  # ms
         return response
+
+    origins = [
+        "http://localhost",
+        "http://localhost:3000",
+    ]
+
+    api.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 def init_routes(api: FastAPI) -> None:

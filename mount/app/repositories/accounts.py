@@ -5,8 +5,8 @@ from app.common.context import Context
 from app.models import Status
 
 READ_PARAMS = """\
-    account_id, username, first_name, last_name,
-    status, created_at, updated_at
+    account_id, username, hashed_password, first_name,
+    last_name, status, created_at, updated_at
 """
 
 
@@ -14,20 +14,22 @@ async def create(
     ctx: Context,
     account_id: UUID,
     username: str,
+    hashed_password: str,
     first_name: str,
     last_name: str,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO accounts (account_id, username, first_name,
+        INSERT INTO accounts (account_id, username, hashed_password, first_name,
                               last_name, status, created_at, updated_at)
-             VALUES (:account_id, :username, :first_name,
+             VALUES (:account_id, :username, :hashed_password, :first_name,
                      :last_name, :status, NOW(), NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "account_id": account_id,
         "username": username,
+        "hashed_password": hashed_password,
         "first_name": first_name,
         "last_name": last_name,
         "status": status,
@@ -88,6 +90,7 @@ async def partial_update(
     ctx: Context,
     account_id: UUID,
     username: str | None = None,
+    hashed_password: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
     status: Status = Status.ACTIVE,
@@ -95,6 +98,7 @@ async def partial_update(
     query = f"""\
         UPDATE accounts
            SET username = COALESCE(:username, username),
+               hashed_password = COALESCE(:hashed_password, hashed_password),
                first_name = COALESCE(:first_name, first_name),
                last_name = COALESCE(:last_name, last_name),
                updated_at = NOW()
