@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-source /vault/secrets/secrets.txt
+if [ -n "$KUBERNETES" ]; then
+  source /vault/secrets/secrets.txt
+fi
 
 # handle int & kill signals as non-errors until final "exec" runs
 trap "{ exit 0; }" TERM INT
