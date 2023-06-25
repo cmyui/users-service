@@ -5,7 +5,7 @@ from app.common.context import Context
 from app.models import Status
 
 READ_PARAMS = """\
-    account_id, phone_number, first_name, last_name,
+    account_id, username, first_name, last_name,
     status, created_at, updated_at
 """
 
@@ -13,21 +13,21 @@ READ_PARAMS = """\
 async def create(
     ctx: Context,
     account_id: UUID,
-    phone_number: str,
+    username: str,
     first_name: str,
     last_name: str,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any]:
     query = f"""\
-        INSERT INTO accounts (account_id, phone_number, first_name,
+        INSERT INTO accounts (account_id, username, first_name,
                               last_name, status, created_at, updated_at)
-             VALUES (:account_id, :phone_number, :first_name,
+             VALUES (:account_id, :username, :first_name,
                      :last_name, :status, NOW(), NOW())
           RETURNING {READ_PARAMS}
     """
     params: dict[str, Any] = {
         "account_id": account_id,
-        "phone_number": phone_number,
+        "username": username,
         "first_name": first_name,
         "last_name": last_name,
         "status": status,
@@ -40,19 +40,19 @@ async def create(
 async def fetch_one(
     ctx: Context,
     account_id: UUID | None = None,
-    phone_number: str | None = None,
+    username: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
         SELECT {READ_PARAMS}
           FROM accounts
          WHERE account_id = COALESCE(:account_id, account_id)
-           AND phone_number = COALESCE(:phone_number, phone_number)
+           AND username = COALESCE(:username, username)
            AND status = :status
     """
     params: dict[str, Any] = {
         "account_id": account_id,
-        "phone_number": phone_number,
+        "username": username,
         "status": status,
     }
     rec = await ctx.db.fetch_one(query, params)
@@ -87,14 +87,14 @@ async def fetch_many(
 async def partial_update(
     ctx: Context,
     account_id: UUID,
-    phone_number: str | None = None,
+    username: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
     status: Status = Status.ACTIVE,
 ) -> dict[str, Any] | None:
     query = f"""\
         UPDATE accounts
-           SET phone_number = COALESCE(:phone_number, phone_number),
+           SET username = COALESCE(:username, username),
                first_name = COALESCE(:first_name, first_name),
                last_name = COALESCE(:last_name, last_name),
                updated_at = NOW()
@@ -104,7 +104,7 @@ async def partial_update(
     """
     params: dict[str, Any] = {
         "account_id": account_id,
-        "phone_number": phone_number,
+        "username": username,
         "first_name": first_name,
         "last_name": last_name,
         "status": status,

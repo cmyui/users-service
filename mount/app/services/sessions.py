@@ -15,7 +15,7 @@ from app.repositories import sessions as sessions_repo
 
 async def create(
     ctx: Context,
-    phone_number: str,
+    username: str,
     password: str,
     ip_address: str,
     user_agent: str,
@@ -24,20 +24,18 @@ async def create(
     await login_attempts_repo.create(
         ctx,
         login_attempt_id,
-        phone_number,
+        username,
         ip_address,
         user_agent,
     )
 
-    if not validators.validate_phone_number(phone_number):
-        return ServiceError.SESSIONS_PHONE_NUMBER_INVALID
-
-    phone_number = formatters.phone_number(phone_number)
+    if not validators.validate_username(username):
+        return ServiceError.SESSIONS_USERNAME_INVALID
 
     if not validators.validate_password(password):
         return ServiceError.SESSIONS_PASSWORD_INVALID
 
-    credentials = await credentials_repo.fetch_one(ctx, identifier=phone_number)
+    credentials = await credentials_repo.fetch_one(ctx, identifier=username)
     if credentials is None:
         return ServiceError.CREDENTIALS_NOT_FOUND
 

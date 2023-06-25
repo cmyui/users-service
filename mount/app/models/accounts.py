@@ -8,14 +8,14 @@ from app.models import Status
 
 
 class SignupForm(BaseModel):
-    phone_number: str
+    username: str
     password: str
     first_name: str
     last_name: str
 
 
 class AccountUpdate(BaseModel):
-    phone_number: str | None
+    username: str | None
     first_name: str | None
     last_name: str | None
 
@@ -25,7 +25,7 @@ class AccountUpdate(BaseModel):
 
 class Account(BaseModel):
     account_id: UUID
-    phone_number: str
+    username: str
     first_name: str
     last_name: str
     status: Status

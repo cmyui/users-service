@@ -2,6 +2,13 @@ import email_validator
 import phonenumbers
 
 
+def validate_username(username: str) -> bool:
+    if len(username) < 4:
+        return False
+    if not username.isalnum():
+        return False
+    return True
+
 def validate_phone_number(phone_number: str) -> bool:
     try:
         phonenumbers.parse(phone_number)

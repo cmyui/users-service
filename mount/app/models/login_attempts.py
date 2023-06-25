@@ -11,7 +11,7 @@ from app.models import BaseModel
 
 class LoginAttempt(BaseModel):
     login_attempt_id: UUID
-    phone_number: str
+    username: str
     ip_address: str
     user_agent: str
     # TODO: should we store result? (success, failure)

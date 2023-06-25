@@ -26,7 +26,7 @@ async def create(
 ) -> Success[Account]:
     data = await accounts.create(
         ctx,
-        args.phone_number,
+        args.username,
         args.password,
         args.first_name,
         args.last_name,
@@ -87,7 +87,7 @@ async def partial_update(
     data = await accounts.partial_update(
         ctx,
         account_id,
-        phone_number=args.phone_number,
+        username=args.username,
         first_name=args.first_name,
         last_name=args.last_name,
     )

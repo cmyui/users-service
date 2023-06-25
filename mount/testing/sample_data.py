@@ -7,6 +7,10 @@ fake = Faker()
 fake.add_provider(internet)
 
 
+def fake_username() -> str:
+    return fake.user_name()
+
+
 def fake_phone_number() -> str:
     # XXX: many numbers returned from faker's phone number generator
     # do not pass the phonenumbers.parse() check, so we implement this

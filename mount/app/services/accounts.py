@@ -15,20 +15,17 @@ from app.repositories import credentials as credentials_repo
 
 async def create(
     ctx: Context,
-    phone_number: str,
+    username: str,
     password: str,
     first_name: str,
     last_name: str,
 ) -> dict[str, Any] | ServiceError:
-    if not validators.validate_phone_number(phone_number):
-        return ServiceError.ACCOUNTS_PHONE_NUMBER_INVALID
-
-    phone_number = formatters.phone_number(phone_number)
-
+    if not validators.validate_username(username):
+        return ServiceError.ACCOUNTS_USERNAME_INVALID
     if not validators.validate_password(password):
         return ServiceError.ACCOUNTS_PASSWORD_INVALID
-    if await accounts_repo.fetch_one(ctx, phone_number=phone_number):
-        return ServiceError.ACCOUNTS_PHONE_NUMBER_EXISTS
+    if await accounts_repo.fetch_one(ctx, username=username):
+        return ServiceError.ACCOUNTS_USERNAME_EXISTS
 
     transaction = await ctx.db.transaction()
 
@@ -38,7 +35,7 @@ async def create(
         account = await accounts_repo.create(
             ctx,
             account_id,
-            phone_number,
+            username,
             first_name,
             last_name,
         )
@@ -50,7 +47,7 @@ async def create(
             ctx,
             credentials_id,
             account_id,
-            phone_number,
+            username,
             hashed_password,
         )
     except Exception as exc:  # pragma: no cover
@@ -67,12 +64,13 @@ async def create(
 async def fetch_one(
     ctx: Context,
     account_id: UUID | None = None,
-    phone_number: str | None = None,
+    username: str | None = None,
 ) -> dict[str, Any] | ServiceError:
-    if phone_number is not None:
-        phone_number = formatters.phone_number(phone_number)
-
-    account = await accounts_repo.fetch_one(ctx, account_id, phone_number)
+    account = await accounts_repo.fetch_one(
+        ctx,
+        account_id=account_id,
+        username=username,
+    )
 
     if account is None:
         return ServiceError.ACCOUNTS_NOT_FOUND
@@ -92,17 +90,14 @@ async def fetch_many(
 async def partial_update(
     ctx: Context,
     account_id: UUID,
-    phone_number: str | None = None,
+    username: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
 ) -> dict[str, Any] | ServiceError:
-    if phone_number is not None:
-        phone_number = formatters.phone_number(phone_number)
-
     account = await accounts_repo.partial_update(
         ctx,
         account_id,
-        phone_number,
+        username,
         first_name,
         last_name,
     )

@@ -28,7 +28,7 @@ async def fetch_one(
 
 @router.get("/v1/login-attempts")
 async def fetch_many(
-    phone_number: str | None = None,
+    username: str | None = None,
     ip_address: str | None = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=1000),
@@ -36,7 +36,7 @@ async def fetch_many(
 ) -> Success[list[LoginAttempt]]:
     data = await login_attempts.fetch_many(
         ctx,
-        phone_number=phone_number,
+        username=username,
         ip_address=ip_address,
         page=page,
         page_size=page_size,

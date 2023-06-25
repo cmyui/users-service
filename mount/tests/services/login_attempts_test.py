@@ -8,45 +8,45 @@ from testing import sample_data
 
 
 async def test_should_create_login_attempt(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     ip_address = sample_data.fake_ipv4_address()
     user_agent = sample_data.fake_user_agent()
 
     data = await login_attempts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         ip_address=ip_address,
         user_agent=user_agent,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert data["ip_address"] == ip_address
     assert data["user_agent"] == user_agent
 
 
-async def test_should_not_create_login_attempt_with_invalid_phone_number(ctx: Context):
+async def test_should_not_create_login_attempt_with_invalid_username(ctx: Context):
     data = await login_attempts.create(
         ctx,
-        phone_number="15555555555",
+        username="15555555555",
         ip_address=sample_data.fake_ipv4_address(),
         user_agent=sample_data.fake_user_agent(),
     )
-    assert data is ServiceError.LOGIN_ATTEMPTS_PHONE_NUMBER_INVALID
+    assert data is ServiceError.LOGIN_ATTEMPTS_USERNAME_INVALID
 
 
 async def test_should_fetch_one_login_attempt_by_id(ctx: Context):
-    phone_number = sample_data.fake_phone_number()
+    username = sample_data.fake_username()
     ip_address = sample_data.fake_ipv4_address()
     user_agent = sample_data.fake_user_agent()
 
     data = await login_attempts.create(
         ctx,
-        phone_number=phone_number,
+        username=username,
         ip_address=ip_address,
         user_agent=user_agent,
     )
     assert not isinstance(data, ServiceError)
-    assert data["phone_number"] == formatters.phone_number(phone_number)
+    assert data["username"] == username
     assert data["ip_address"] == ip_address
     assert data["user_agent"] == user_agent
 
@@ -54,7 +54,7 @@ async def test_should_fetch_one_login_attempt_by_id(ctx: Context):
         ctx, login_attempt_id=data["login_attempt_id"]
     )
     assert not isinstance(data2, ServiceError)
-    assert data2["phone_number"] == formatters.phone_number(phone_number)
+    assert data2["username"] == username
     assert data2["ip_address"] == ip_address
     assert data2["user_agent"] == user_agent
 
@@ -67,18 +67,18 @@ async def test_should_not_fetch_one_nonexistent_login_attempt(ctx: Context):
 async def test_should_fetch_all_login_attempts(ctx: Context):
     expected = []
     for _ in range(3):
-        phone_number = sample_data.fake_phone_number()
+        username = sample_data.fake_username()
         ip_address = sample_data.fake_ipv4_address()
         user_agent = sample_data.fake_user_agent()
 
         data = await login_attempts.create(
             ctx,
-            phone_number=phone_number,
+            username=username,
             ip_address=ip_address,
             user_agent=user_agent,
         )
         assert not isinstance(data, ServiceError)
-        assert data["phone_number"] == formatters.phone_number(phone_number)
+        assert data["username"] == username
         assert data["ip_address"] == ip_address
         assert data["user_agent"] == user_agent
 
@@ -89,7 +89,7 @@ async def test_should_fetch_all_login_attempts(ctx: Context):
     assert len(data2) == 3
 
     for account_data, expected_data in zip(data2, expected):
-        assert account_data["phone_number"] == expected_data["phone_number"]
+        assert account_data["username"] == expected_data["username"]
         assert account_data["ip_address"] == expected_data["ip_address"]
         assert account_data["user_agent"] == expected_data["user_agent"]
 
@@ -97,18 +97,18 @@ async def test_should_fetch_all_login_attempts(ctx: Context):
 async def test_should_fetch_one_page_of_login_attempts(ctx: Context):
     expected = []
     for _ in range(3):
-        phone_number = sample_data.fake_phone_number()
+        username = sample_data.fake_username()
         ip_address = sample_data.fake_ipv4_address()
         user_agent = sample_data.fake_user_agent()
 
         data = await login_attempts.create(
             ctx,
-            phone_number=phone_number,
+            username=username,
             ip_address=ip_address,
             user_agent=user_agent,
         )
         assert not isinstance(data, ServiceError)
-        assert data["phone_number"] == formatters.phone_number(phone_number)
+        assert data["username"] == username
         assert data["ip_address"] == ip_address
         assert data["user_agent"] == user_agent
 
@@ -119,6 +119,6 @@ async def test_should_fetch_one_page_of_login_attempts(ctx: Context):
     assert len(data2) == 2
 
     for account_data, expected_data in zip(data2, expected[:2]):
-        assert account_data["phone_number"] == expected_data["phone_number"]
+        assert account_data["username"] == expected_data["username"]
         assert account_data["ip_address"] == expected_data["ip_address"]
         assert account_data["user_agent"] == expected_data["user_agent"]
