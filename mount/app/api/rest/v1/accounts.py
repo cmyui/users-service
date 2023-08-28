@@ -1,3 +1,4 @@
+from typing import Annotated
 from uuid import UUID
 
 from app.api.rest.context import RequestContext
@@ -21,8 +22,8 @@ router = APIRouter(tags=["Accounts"])
     status_code=status.HTTP_201_CREATED,
 )
 async def create(
+    ctx: Annotated[RequestContext, Depends()],
     args: SignupForm,
-    ctx: RequestContext = Depends(),
 ) -> Success[Account]:
     data = await accounts.create(
         ctx,
@@ -46,8 +47,8 @@ async def create(
 
 @router.get("/v1/accounts/{account_id}")
 async def fetch_one(
+    ctx: Annotated[RequestContext, Depends()],
     account_id: UUID,
-    ctx: RequestContext = Depends(),
 ) -> Success[Account]:
     data = await accounts.fetch_one(ctx, account_id=account_id)
     if isinstance(data, ServiceError):
@@ -59,9 +60,9 @@ async def fetch_one(
 
 @router.get("/v1/accounts")
 async def fetch_many(
+    ctx: Annotated[RequestContext, Depends()],
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=1000),
-    ctx: RequestContext = Depends(),
 ) -> Success[list[Account]]:
     data = await accounts.fetch_many(ctx, page=page, page_size=page_size)
     if isinstance(data, ServiceError):
@@ -80,9 +81,9 @@ async def fetch_many(
 
 @router.patch("/v1/accounts/{account_id}")
 async def partial_update(
+    ctx: Annotated[RequestContext, Depends()],
     account_id: UUID,
     args: AccountUpdate,
-    ctx: RequestContext = Depends(),
 ) -> Success[Account]:
     data = await accounts.partial_update(
         ctx,
@@ -103,8 +104,8 @@ async def partial_update(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete(
+    ctx: Annotated[RequestContext, Depends()],
     account_id: UUID,
-    ctx: RequestContext = Depends(),
 ) -> None:
     data = await accounts.delete(ctx, account_id)
     if isinstance(data, ServiceError):
